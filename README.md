@@ -1,4 +1,4 @@
-==================INSTALL==================
+================INSTALL================
 
 To install, rename "Dot.nuke" to ".nuke" and merge it with your existing .nuke. You should probably make a backup of your .nuke before doing this.
 
@@ -7,7 +7,7 @@ After installing, launch Nuke and check the Project Settings for documentation. 
 All information can be found below as well.
 
 
-==================README==================
+================README================
 
 The goal of this pipeline setup is to reduce manual labour and human error while not getting too complicated. It also allows for user and show specific settings. In order for it to work, you must save your script with a specific name and folder structure.
 
