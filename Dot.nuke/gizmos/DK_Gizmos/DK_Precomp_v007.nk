@@ -16,5 +16,5 @@ Write {
  selected true
  addUserKnob {20 customOptions l "Custom Options"}
  addUserKnob {1 precompName l "Precomp Name"}
- precompName Reframe_test
+ precompName PrecompName
 }
