@@ -20,7 +20,7 @@ nuke.pluginAddPath('fonts')
 
 # Change the "user" variable to one that exists. You can also set it to: None
 
-user = "DJK"
+user = "MAG"
 
 if user is not None:
 
@@ -33,9 +33,10 @@ if user is not None:
 
 # Change the "show" variable to one that exists. You can also set it to: None
 
-show = None
+show = "AZL"
 
 if show is not None:
 
 	showPath = os.path.join( "Shows" , show )
+
 	nuke.pluginAddPath( showPath )
