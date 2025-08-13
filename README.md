@@ -1,6 +1,6 @@
 ================INSTALL================
 
-To install, rename "Dot.nuke" to ".nuke" and merge it with your existing .nuke. You should probably make a backup of your .nuke before doing this.
+To install, merge these files with your existing .nuke. You should probably make a backup of your .nuke before doing this.
 
 After installing, launch Nuke and check the Project Settings for documentation. There is also a "README" toolset that you can bring in with the nodegraph tab menu.
 

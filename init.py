@@ -20,7 +20,7 @@ nuke.pluginAddPath('fonts')
 
 # Change the "user" variable to one that exists. You can also set it to: None
 
-user = "DJK"
+user = None
 
 if user is not None:
 
