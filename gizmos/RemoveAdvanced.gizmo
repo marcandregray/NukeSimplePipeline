@@ -1,0 +1,26 @@
+Gizmo {
+ name Remove
+ knobChanged "#Olivier Blanchet\n\ntn = nuke.thisNode()\ntk = nuke.thisKnob()\nexception_patterns = \[]\npatterns = \[]\n\n\nif tk.name() in \['_operation','_exception', '_pattern','inputChange']:\n    \n    channels = tn.input(0).channels()\n    layers = \[]\n    exception_value = tn\['_exception'].value()\n    exception_patterns = sorted(set(exception_value.split(' ')))\n    pattern_value = tn\['_pattern'].value()\n    patterns = sorted(set(pattern_value.split(' ')))\n    \n    operation = tn\['_operation'].value()\n    \n    all_patterns = exception_patterns + patterns\n    \n    if all_patterns != \['', '']:\n        \n        #clear node\n        for node in nuke.allNodes():\n            if node.Class() in \['Remove']:\n                nuke.delete(node)\n        #select Input        \n        nuke.toNode('Input1').setSelected(True)\n        \n        #list layers\n        for channel in channels:\n            chan = channel.split(\".\")\[0]\n            if chan not in layers:\n                layers.append(chan)\n        \n        #set lists  \n        keep_layers = \[]\n        exception_layers = \[]\n        \n        #check for exceptions\n        if exception_patterns != \['']:\n            for exception in exception_patterns:\n                exception_layers += \[layer for layer in layers if exception in layer]\n        else:\n            exception_layers = \[]\n\n        #set the list\n        if operation == 'keep':\n            for pattern in patterns:\n                keep_layers += \[layer for layer in layers if pattern in layer]\n                if len(exception_layers) != 0:\n                    keep_layers = \[l for l in keep_layers if l not in exception_layers]\n            #print \"keep\", keep_layers\n            \n        else:\n\n            remove_layers = \[]\n            for pattern in patterns:\n                remove_layers += \[layer for layer in layers if pattern in layer]\n                \n            if exception_layers != \[]:\n                for e in exception_layers:\n                    remove_layers.remove(e)\n                    \n            keep_layers = \[layer for layer in layers if layer not in remove_layers]\n            #print 'remove', keep_layers\n\n        \n        #generate nodes, 4 layers per node\n        removeNode = 1\n        for layer in layers:\n            if layer not in keep_layers:\n                if removeNode == 1:\n                    newnode = nuke.createNode('Remove', 'channels %s operation remove'%(layer), inpanel = False)           \n                    removeNode = removeNode + 1   \n                else:\n                    newnode\['channels%s'%(removeNode)].setValue(layer)\n                    if removeNode == 4:\n                        removeNode = 1 \n                    else:\n                        removeNode = removeNode + 1\n    \n    else:\n    \n        for node in nuke.allNodes('Remove'):\n            nuke.delete(node)"
+ tile_color 0xa83b6242
+ selected true
+ addUserKnob {20 settings l Settings}
+ addUserKnob {26 _title l "" +STARTLINE T "<b>Remove</b> v1.2"}
+ addUserKnob {26 ""}
+ addUserKnob {4 _operation l operation M {keep remove}}
+ addUserKnob {1 _pattern l pattern(s)}
+ addUserKnob {1 _exception l exception(s)}
+ addUserKnob {26 ""}
+ addUserKnob {26 _info l "" +STARTLINE T "<i>Separate patterns with a space.</i>"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 0
+  ypos -56
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 6150
+ }
+end_group
