@@ -1,0 +1,257 @@
+#! /home/jc/CUSTOM_PROGRAMS/FoundryNuke/Nuke13.2v7/libnuke-13.2.7.so -nx
+version 13.2 v7
+Gizmo {
+ name FractalBlur
+ inputs 3
+ addUserKnob {20 controls l Controls}
+ addUserKnob {41 channels T Merge5.also_merge}
+ addUserKnob {26 ""}
+ addUserKnob {41 type T Noise3.type}
+ addUserKnob {41 size_2 l size T Noise3.size}
+ addUserKnob {41 uv_scale l spread T IDistort1.uv_scale}
+ addUserKnob {41 zoffset l seed T Noise3.zoffset}
+ addUserKnob {41 lacunarity T Noise3.lacunarity}
+ addUserKnob {41 intenisty l intensity T Copy1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {41 pre_blur l "pre blur" T Blur2.size}
+ addUserKnob {41 map_blur l "map blur" T Blur3.size}
+ addUserKnob {41 post_blur l "post blur" T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 _1 l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge5.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge5.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge5.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge5.fringe}
+ addUserKnob {41 mix T Merge5.mix}
+ addUserKnob {20 transform l Transform}
+ addUserKnob {41 translate T Noise3.translate}
+ addUserKnob {41 rotate T Noise3.rotate}
+ addUserKnob {41 scale T Noise3.scale}
+ addUserKnob {41 skewX l "skew X" T Noise3.skewX}
+ addUserKnob {41 skewY l "skew Y" T Noise3.skewY}
+ addUserKnob {41 skew_order l "skew order" T Noise3.skew_order}
+ addUserKnob {41 center T Noise3.center}
+ addUserKnob {41 xrotate T Noise3.xrotate}
+ addUserKnob {41 yrotate T Noise3.yrotate}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  label "a = 'Noise3'\nb = nuke.toNode('Noise2')\nknobName = 'type'\nb.knob(knobName).setExpression('parent.' + a + '.' + knobName)"
+  note_font_size 15
+  xpos -1290
+  ypos 6
+  bdwidth 513
+  bdheight 231
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  label "a = 'Noise3'\nb = nuke.toNode('Noise2')\nknobName = 'skew_order'\nb.knob(knobName).setExpression('parent.' + a + '.' + knobName)"
+  note_font_size 15
+  xpos -1292
+  ypos 289
+  bdwidth 513
+  bdheight 231
+ }
+ Input {
+  inputs 0
+  name mask
+  label "\[value number]"
+  xpos 301
+  ypos 893
+  number 1
+ }
+ Input {
+  inputs 0
+  name area
+  label "\[value number]"
+  xpos 306
+  ypos 609
+  number 2
+ }
+ Input {
+  inputs 0
+  name Input
+  label "\[value number]"
+  xpos 95
+  ypos -418
+ }
+ Dot {
+  name Dot6
+  xpos 129
+  ypos -198
+ }
+set N11275880 [stack 0]
+ Dot {
+  name Dot2
+  xpos -192
+  ypos -198
+ }
+set N65af1170 [stack 0]
+ Blur {
+  name Blur2
+  xpos -226
+  ypos -26
+ }
+ AdjBBox {
+  numpixels {{abs(IDistort1.uv_scale)}}
+  name AdjBBox1
+  xpos -226
+  ypos 99
+ }
+ Dot {
+  name Dot1
+  xpos -192
+  ypos 256
+ }
+set N110b8fa0 [stack 0]
+push $N65af1170
+ Dot {
+  name Dot5
+  xpos -556
+  ypos -198
+ }
+ Multiply {
+  value 0
+  name Multiply1
+  xpos -590
+  ypos -103
+ }
+set N11284100 [stack 0]
+ Noise {
+  output {rgba.red -rgba.green -rgba.blue none}
+  size 40
+  zoffset 1.23
+  center {960 540}
+  name Noise3
+  xpos -642
+  ypos 12
+ }
+push $N11284100
+ Noise {
+  output {-rgba.red rgba.green -rgba.blue none}
+  type {{parent.Noise3.type}}
+  size {{parent.Noise3.size} {parent.Noise3.size}}
+  zoffset {{Noise3.zoffset+10}}
+  octaves {{Noise3.octaves}}
+  nyquist {{Noise3.nyquist}}
+  lacunarity {{Noise3.lacunarity}}
+  gain {{Noise3.gain}}
+  gamma {{Noise3.gamma}}
+  translate {{parent.Noise3.translate} {parent.Noise3.translate}}
+  rotate {{parent.Noise3.rotate}}
+  scale {{parent.Noise3.scale}}
+  skewX {{parent.Noise3.skewX}}
+  skewY {{parent.Noise3.skewY}}
+  skew_order {{parent.Noise3.skew_order}}
+  center {{parent.Noise3.center} {parent.Noise3.center}}
+  xrotate {{parent.Noise3.xrotate}}
+  yrotate {{parent.Noise3.yrotate}}
+  name Noise2
+  xpos -522
+  ypos 11
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  also_merge all
+  name Merge6
+  xpos -579
+  ypos 94
+ }
+ Blur {
+  channels rgb
+  name Blur3
+  xpos -579
+  ypos 151
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -579
+  ypos 252
+ }
+ Shuffle1 {
+  out forward
+  name Shuffle1
+  label "\[value in]"
+  xpos -579
+  ypos 395
+ }
+ Remove {
+  operation keep
+  channels forward
+  name Remove1
+  xpos -579
+  ypos 435
+ }
+ Dot {
+  name Dot7
+  xpos -545
+  ypos 620
+ }
+push $N110b8fa0
+ Expression {
+  channel0 {forward.u -forward.v}
+  expr0 IDistort1.uv_offset
+  channel1 {-forward.u forward.v}
+  expr1 IDistort1.uv_offset
+  channel2 none
+  channel3 none
+  name Expression2
+  xpos -226
+  ypos 419
+ }
+ Copy {
+  inputs 2+1
+  channels forward
+  name Copy1
+  xpos -226
+  ypos 602
+ }
+ IDistort {
+  uv forward
+  uv_offset {{"Noise3.type == 0 ? 0.25 : 0.125"}}
+  uv_scale 100
+  name IDistort1
+  xpos -226
+  ypos 747
+ }
+ Blur {
+  name Blur1
+  xpos -226
+  ypos 787
+ }
+ Dot {
+  name Dot4
+  xpos -192
+  ypos 904
+ }
+push $N11275880
+ Merge2 {
+  inputs 2+1
+  operation copy
+  Achannels none
+  Bchannels none
+  output none
+  also_merge alpha
+  name Merge5
+  xpos 95
+  ypos 893
+ }
+ Output {
+  name Output1
+  xpos 95
+  ypos 1127
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0x262626ff
+  label "Setting drop down menu parent with python"
+  note_font_size 25
+  xpos -1281
+  ypos -78
+ }
+end_group

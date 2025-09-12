@@ -1,0 +1,8 @@
+to install the connect dot and get more functionality over the base dot:
+
+-place the ConnectDot folder into your .nuke folder
+-add this line to the init.py - "nuke.pluginAddPath('ConnectDot')"
+-add this line to the menu.py - "import ConnectDot_Functions"
+
+-this will make it so when you crete the connect dot using "," the node will automatically refresh and attempt to connect to a camera with a dot directly underneath it ("rendercam" dot for example)
+-this will also let you "ctrl + ," to make a dot with a label easier by selecting the node you wish to make a dot under   
