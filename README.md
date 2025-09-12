@@ -51,7 +51,7 @@ Where:
 
 If the name looks correct,  click the "Save Script" button to create the path and save the script inside.
 
-================================================================================================================================================================================
+======================================================================
 
 NSP includes 2 main tools for writing out media that will help you keep things organzied and work faster. These both use relative paths based on the project directory, which is always set to be the Show folder.
 
@@ -69,7 +69,7 @@ Sequence/Shot/Nuke/Renders/PrecompName/v001/Show_Seq_Shot_v001_%04d.exr
 
 This uses the same logic as the "NSP_Precomp" tool, but will always be called, "Main" and is reserved for your shots final render. You can still change to extension incase you want to write out a video instead of an image sequence for final.
 
-==================================================================================
+======================================================================
 
 ===== Create Read Nodes from Writes =====
 
@@ -83,7 +83,7 @@ When you save or version up your script, these two tools will automatically upda
 
 If you want to use DWAA compression to save disk space, all write nodes created with NSP using the exr extension will always have the compression method labelled. This also applies to all read nodes created pointing to a file using DWAA compression. This is so you will always have a reminder for if a file was created using DWAA since it can be almost impossible to tell just by looking at the image. Usually you will want to switch back to Zip (1 scanline) for your final renders to retain pixel accuracy.
 
-================================================================================================================================================================================
+======================================================================
 
 ===== Some Useful Python Tools =====
 
@@ -99,7 +99,7 @@ This tool turns selected gizmos in your script into groups. This can be extremel
 
 Why not always use groups and never use gizmos? Because saving everything in the script can massively increase the size of the script file and make it much slower to read/save.
 
-================================================================================================================================================================================
+======================================================================
 
 ===== A Note on "Users" and "Shows" =====
 
