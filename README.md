@@ -58,7 +58,7 @@ NSP includes 2 main tools for writing out media that will help you keep things o
 1.
 "NSP_Precomp"
 
-When this tool is created in the nodegraph (ctrl + w), a popup menu will appear asking for the Precomp Name and file extension. The name can contain "_" but not "." or spaces. For the extension, "exr" is default, but you can change it to anything like "png" or "mov". After pressing ok it will create the precomp write node with a relative path to your project directory.
+When this tool is created in the nodegraph (ctrl + w), a popup menu will appear asking for the Precomp Name and file extension. The name can contain "_" but not "." or spaces. For the extension, "exr" is default, but you can change it to anything like "png" or "mov". After pressing ok it will create the precomp write node with a relative path to your project directory. On the node, there is a tab titled "NSP" where you can update the Precomp Name and file extension. You must save the script for the node to implement your changes.
 
 It should look something like:
 
