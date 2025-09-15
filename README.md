@@ -1,6 +1,6 @@
 ================INSTALL================
 
-To install, add the "NSP" folder to your .nuke folder.
+To install, copy the "NSP" folder to your .nuke folder.
 
 You must also include the following line inside your .nuke/init.py file:
 
