@@ -1,0 +1,18 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Thumbnails
+._.DS_Store
+Thumbs.db
+
+# Editor swap and backup files
+*~
+*.swp
+*.tmp
+*.bak
+
+# Log files
+*.log
