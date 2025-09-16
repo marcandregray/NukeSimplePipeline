@@ -1,0 +1,132 @@
+#! /home/jc/CUSTOM_PROGRAMS/FoundryNuke/Nuke13.2v7/libnuke-13.2.7.so -nx
+version 13.2 v7
+Gizmo {
+ name Reformat_CG
+ tile_color 0xaa55ffff
+ label "\[value Copy2.input.format.r]x\[value Copy2.input.format.t]"
+ addUserKnob {20 User}
+ addUserKnob {41 format l "Incoming Format" t "The original incoming resolution from the 3d software, not including overscan." T Reformat4.format}
+ addUserKnob {41 format_1 l "Working Format" t "The working resolution of the project which the incoming image will be reformatted to" T Reformat3.format}
+ addUserKnob {26 ""}
+ addUserKnob {41 filter T Reformat3.filter}
+ addUserKnob {41 refreshLayers l "Refresh Layers" t "Use this if your incoming layers have changed. Updates the list of layers to be removed so they do not get he impulse filter intended for the utility layers." -STARTLINE T Control.refreshLayers}
+ addUserKnob {41 pbb l "preserve bounding box" T Reformat3.pbb}
+ addUserKnob {41 unfilter_utils l "unfilter util layers" t "Checking this protects the utility layers, like cryptomates, position, or depthz, by using the impulse filter with their reformats" T Control.unfilter_utils}
+ addUserKnob {41 black_outside l "black outside" T Control.black_outside}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -810
+  ypos -632
+ }
+ Reformat {
+  format "960 400 0 0 960 400 1 LOTFR_Quarter"
+  scale 0.9
+  resize none
+  pbb true
+  name Reformat4
+  label "Set Overscan"
+  xpos -810
+  ypos -461
+ }
+set N3e28f080 [stack 0]
+ Dot {
+  name Dot2
+  xpos -638
+  ypos -445
+ }
+ Reformat {
+  format {{{parent.Reformat3.format}}}
+  filter impulse
+  clamp {{parent.Reformat3.clamp}}
+  black_outside {{parent.Reformat3.black_outside}}
+  pbb {{parent.Reformat3.pbb}}
+  name Reformat2
+  label "\[value filter]"
+  xpos -672
+  ypos -371
+ }
+ Group {
+  name Remove1
+  knobChanged "#Olivier Blanchet\n\ntn = nuke.thisNode()\ntk = nuke.thisKnob()\nexception_patterns = \[]\npatterns = \[]\n\n\nif tk.name() in \['_operation','_exception', '_pattern','inputChange']:\n    \n    channels = tn.input(0).channels()\n    layers = \[]\n    exception_value = tn\['_exception'].value()\n    exception_patterns = sorted(set(exception_value.split(' ')))\n    pattern_value = tn\['_pattern'].value()\n    patterns = sorted(set(pattern_value.split(' ')))\n    \n    operation = tn\['_operation'].value()\n    \n    all_patterns = exception_patterns + patterns\n    \n    if all_patterns != \['', '']:\n        \n        #clear node\n        for node in nuke.allNodes():\n            if node.Class() in \['Remove']:\n                nuke.delete(node)\n        #select Input        \n        nuke.toNode('Input1').setSelected(True)\n        \n        #list layers\n        for channel in channels:\n            chan = channel.split(\".\")\[0]\n            if chan not in layers:\n                layers.append(chan)\n        \n        #set lists  \n        keep_layers = \[]\n        exception_layers = \[]\n        \n        #check for exceptions\n        if exception_patterns != \['']:\n            for exception in exception_patterns:\n                exception_layers += \[layer for layer in layers if exception in layer]\n        else:\n            exception_layers = \[]\n\n        #set the list\n        if operation == 'keep':\n            for pattern in patterns:\n                keep_layers += \[layer for layer in layers if pattern in layer]\n                if len(exception_layers) != 0:\n                    keep_layers = \[l for l in keep_layers if l not in exception_layers]\n            #print \"keep\", keep_layers\n            \n        else:\n\n            remove_layers = \[]\n            for pattern in patterns:\n                remove_layers += \[layer for layer in layers if pattern in layer]\n                \n            if exception_layers != \[]:\n                for e in exception_layers:\n                    remove_layers.remove(e)\n                    \n            keep_layers = \[layer for layer in layers if layer not in remove_layers]\n            #print 'remove', keep_layers\n\n        \n        #generate nodes, 4 layers per node\n        removeNode = 1\n        for layer in layers:\n            if layer not in keep_layers:\n                if removeNode == 1:\n                    newnode = nuke.createNode('Remove', 'channels %s operation remove'%(layer), inpanel = False)           \n                    removeNode = removeNode + 1   \n                else:\n                    newnode\['channels%s'%(removeNode)].setValue(layer)\n                    if removeNode == 4:\n                        removeNode = 1 \n                    else:\n                        removeNode = removeNode + 1\n    \n    else:\n    \n        for node in nuke.allNodes('Remove'):\n            nuke.delete(node)"
+  tile_color 0xa83b6242
+  xpos -672
+  ypos -306
+  addUserKnob {20 settings l Settings}
+  addUserKnob {26 _title l "" +STARTLINE T "<b>Remove</b> v1.2"}
+  addUserKnob {26 ""}
+  addUserKnob {4 _operation l operation M {keep remove}}
+  _operation remove
+  addUserKnob {1 _pattern l pattern(s)}
+  _pattern "light_ color_ mask_"
+  addUserKnob {1 _exception l exception(s)}
+  addUserKnob {26 ""}
+  addUserKnob {26 _info l "" +STARTLINE T "<i>Separate patterns with a space.</i>"}
+ }
+  Input {
+   inputs 0
+   name Input1
+   selected true
+   xpos 0
+   ypos -56
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 6150
+  }
+ end_group
+add_layer {util_mist util_mist.V}
+ Remove {
+  channels rgba
+  channels2 util_mist
+  name Remove4
+  xpos -672
+  ypos -258
+ }
+ Dot {
+  name Dot30
+  xpos -638
+  ypos -170
+ }
+push $N3e28f080
+ Reformat {
+  format "3840 1600 0 0 3840 1600 1 LOTFR_Full"
+  pbb true
+  name Reformat3
+  label "\[value filter]"
+  xpos -810
+  ypos -371
+ }
+ Copy {
+  inputs 2
+  channels all
+  name Copy2
+  xpos -810
+  ypos -186
+  disable {{1-Control.unfilter_utils}}
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos -810
+  ypos -136
+  disable {{1-Control.black_outside}}
+ }
+ Output {
+  name Output
+  xpos -810
+  ypos -34
+ }
+ NoOp {
+  inputs 0
+  name Control
+  xpos -491
+  ypos -446
+  addUserKnob {20 User}
+  addUserKnob {22 refreshLayers l "Refresh Layers" T "##disconnect selected nodes 0 input\nnuke.toNode(\"Remove1\").setInput(0, None)\n\n##connect two known nodes together\nInputNode = nuke.toNode(\"Reformat2\")\nOutputNode = nuke.toNode(\"Remove1\")\nOutputNode.setInput(0,InputNode)" +STARTLINE}
+  addUserKnob {6 unfilter_utils l "unfilter util layers" +STARTLINE}
+  unfilter_utils true
+  addUserKnob {6 black_outside l "black outside" +STARTLINE}
+ }
+end_group

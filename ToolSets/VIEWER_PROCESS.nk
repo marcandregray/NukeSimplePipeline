@@ -1,0 +1,32 @@
+set cut_paste_input [stack 0]
+version 13.2 v7
+push $cut_paste_input
+Group {
+ name VIEWER_PROCESS
+ selected true
+ xpos -32
+ ypos -570
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 36
+  ypos -731
+ }
+ Grade {
+  white 0.5
+  name Grade1
+  xpos 36
+  ypos -628
+ }
+ ColorCorrect {
+  name ColorCorrect1
+  xpos 36
+  ypos -602
+ }
+ Output {
+  name Output1
+  xpos 36
+  ypos -502
+ }
+end_group

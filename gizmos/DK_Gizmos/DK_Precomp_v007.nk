@@ -1,0 +1,20 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+Write {
+ channels rgba
+ file "\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 1 end-2]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 2 end-1]/Nuke/Renders/\[value precompName]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] end end]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 0 end-3]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 1 end-2]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 2 end-1]_\[value precompName]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] end end]_%04d.exr"
+ proxy "\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 1 end-2]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 2 end-1]/Nuke/Renders/\[value precompName]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] end end]/\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 0 end-3]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 1 end-2]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] 2 end-1]_\[value precompName]_\[lrange \[split \[file rootname \[file tail \[value root.name]]] \"_\"] end end]_%04d.exr"
+ file_type exr
+ dw_compression_level 100
+ first_part rgba
+ create_directories true
+ checkHashOnRead false
+ version 37
+ afterFrameRender nukescripts.cache_clear('')
+ name Write
+ label "\[value compression]"
+ selected true
+ addUserKnob {20 customOptions l "Custom Options"}
+ addUserKnob {1 precompName l "Precomp Name"}
+ precompName PrecompName
+}
