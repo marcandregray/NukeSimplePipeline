@@ -16,3 +16,7 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Nuke preferences
+uistate.ini
+preferences16.0.nk
