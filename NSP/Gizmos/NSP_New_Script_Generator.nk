@@ -1,0 +1,22 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+NoOp {
+ name New_Script_Generator
+ label "\[value script_name]"
+ note_font_size 15
+ selected true
+ addUserKnob {20 User}
+ addUserKnob {1 proj l "Projects Path"}
+ proj ProjectsPath
+ addUserKnob {1 show l Show}
+ show Show
+ addUserKnob {1 seq l Sequence}
+ seq Seq
+ addUserKnob {1 shot l Shot}
+ shot Shot
+ addUserKnob {26 ""}
+ addUserKnob {1 script_name l "Script Name"}
+ addUserKnob {26 ""}
+ addUserKnob {22 calc l "Calculate Script Name" T new_script_generator.calculate_script_name() +STARTLINE}
+ addUserKnob {22 save_script l "Save Script" -STARTLINE T new_script_generator.save_script()}
+}
