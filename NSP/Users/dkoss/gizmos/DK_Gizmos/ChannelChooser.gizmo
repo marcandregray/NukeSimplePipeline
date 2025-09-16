@@ -1,0 +1,290 @@
+#! /home/jc/CUSTOM_PROGRAMS/FoundryNuke/Nuke13.2v7/libnuke-13.2.7.so -nx
+version 13.2 v7
+Gizmo {
+ name ChannelChooser
+ tile_color 0xffbf00ff
+ addUserKnob {20 User}
+ addUserKnob {6 red l Red +STARTLINE}
+ red true
+ addUserKnob {6 green l Green -STARTLINE}
+ green true
+ addUserKnob {6 blue l Blue -STARTLINE}
+ blue true
+ addUserKnob {4 rgb l "Pick Channel" M {None Red Green Blue}}
+ addUserKnob {41 operation_1 l Operation T Merge1.operation}
+ addUserKnob {26 ""}
+ addUserKnob {6 rgb2a l RGBtoA? +STARTLINE}
+ rgb2a true
+ addUserKnob {41 operation l Operation T Merge4.operation}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  label "a = 'Merge1'\nb = nuke.toNode('Merge2')\nc = nuke.toNode('Merge3')\nknobName = 'operation'\nb.knob(knobName).setExpression('parent.' + a + '.' + knobName)\nc.knob(knobName).setExpression('parent.' + a + '.' + knobName)"
+  note_font_size 15
+  xpos 152
+  ypos -764
+  bdwidth 513
+  bdheight 231
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -372
+  ypos -841
+ }
+ Shuffle1 {
+  alpha black
+  name Shuffle4
+  label "Kill Alpha"
+  xpos -372
+  ypos -735
+ }
+ Multiply {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  value 0
+  name Multiply1
+  xpos -372
+  ypos -623
+  disable {{red}}
+ }
+ Multiply {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  value 0
+  name Multiply2
+  xpos -372
+  ypos -585
+  disable {{green}}
+ }
+ Multiply {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  value 0
+  name Multiply3
+  xpos -372
+  ypos -547
+  disable {{blue}}
+ }
+ Dot {
+  name Dot1
+  xpos -338
+  ypos -341
+ }
+set N3db0f800 [stack 0]
+ Dot {
+  name Dot3
+  xpos 9
+  ypos -341
+ }
+set N3db14650 [stack 0]
+ Dot {
+  name Dot5
+  xpos 365
+  ypos -341
+ }
+set N3db19590 [stack 0]
+ Dot {
+  name Dot7
+  xpos 718
+  ypos -341
+ }
+set N3db1e4d0 [stack 0]
+ Shuffle1 {
+  red black
+  green black
+  blue black
+  alpha blue
+  name Shuffle11
+  xpos 793
+  ypos -253
+ }
+push 0
+push $N3db1e4d0
+ Shuffle1 {
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle12
+  xpos 578
+  ypos -252
+ }
+push $N3db1e4d0
+ Shuffle1 {
+  red black
+  green black
+  blue black
+  alpha green
+  name Shuffle13
+  xpos 684
+  ypos -249
+ }
+ Merge2 {
+  inputs 3+1
+  operation screen
+  name Merge4
+  label "\[value mix]"
+  xpos 684
+  ypos -160
+ }
+ Dot {
+  name Dot8
+  xpos 718
+  ypos 209
+ }
+push $N3db19590
+ Shuffle1 {
+  red black
+  green black
+  alpha black
+  name Shuffle8
+  xpos 435
+  ypos -261
+ }
+push 0
+push $N3db19590
+ Shuffle1 {
+  red black
+  green black
+  blue red
+  alpha black
+  name Shuffle9
+  xpos 225
+  ypos -258
+ }
+push $N3db19590
+ Shuffle1 {
+  red black
+  green black
+  blue green
+  alpha black
+  name Shuffle10
+  xpos 331
+  ypos -257
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{parent.Merge1.operation}}
+  name Merge3
+  label "\[value mix]"
+  xpos 331
+  ypos -145
+ }
+ Dot {
+  name Dot6
+  xpos 365
+  ypos 114
+ }
+push $N3db14650
+ Shuffle1 {
+  red black
+  green blue
+  blue black
+  alpha black
+  name Shuffle5
+  xpos 88
+  ypos -256
+ }
+push 0
+push $N3db14650
+ Shuffle1 {
+  red black
+  green red
+  blue black
+  alpha black
+  name Shuffle6
+  xpos -131
+  ypos -258
+ }
+push $N3db14650
+ Shuffle1 {
+  red black
+  blue black
+  alpha black
+  name Shuffle7
+  xpos -25
+  ypos -257
+ }
+ Merge2 {
+  inputs 3+1
+  operation {{parent.Merge1.operation}}
+  name Merge2
+  label "\[value mix]"
+  xpos -25
+  ypos -144
+ }
+ Dot {
+  name Dot4
+  xpos 9
+  ypos 5
+ }
+push $N3db0f800
+ Shuffle1 {
+  red blue
+  green black
+  blue black
+  alpha black
+  name Shuffle3
+  xpos -264
+  ypos -259
+ }
+push 0
+push $N3db0f800
+ Shuffle1 {
+  green black
+  blue black
+  alpha black
+  name Shuffle1
+  xpos -481
+  ypos -256
+ }
+push $N3db0f800
+ Shuffle1 {
+  red green
+  green black
+  blue black
+  alpha black
+  name Shuffle2
+  xpos -372
+  ypos -257
+ }
+ Merge2 {
+  inputs 3+1
+  operation screen
+  name Merge1
+  label "\[value mix]"
+  xpos -372
+  ypos -146
+ }
+push $N3db0f800
+ Dot {
+  name Dot9
+  xpos -641
+  ypos -341
+ }
+ Dot {
+  name Dot10
+  xpos -641
+  ypos 114
+ }
+ Switch {
+  inputs 4
+  which {{rgb}}
+  name Switch1
+  xpos -372
+  ypos 110
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -372
+  ypos 199
+  disable {{1-rgb2a}}
+ }
+ Output {
+  name Output1
+  xpos -372
+  ypos 296
+ }
+end_group
