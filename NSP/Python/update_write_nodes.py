@@ -1,4 +1,4 @@
-# update_write_nodes_v004
+# update_write_nodes_v005
 
 import nuke
 import os
@@ -30,31 +30,6 @@ def update_write_nodes():
                 procedural_file_path = f"{seq}/{shot}/Nuke/Renders/{precompName}/{version}/{show}_{seq}_{shot}_{precompName}_{version}.{extension}"
 
             node.knob('name').setValue("Precomp_" + precompName)
-            node.knob("file").setValue(procedural_file_path)
-            node.knob("proxy").setValue(procedural_file_path)
-            node.knob("reload").execute()
-
-            if extension == "exr":
-
-                node.knob('dw_compression_level').setValue(100)
-                node.knob('label').setValue("[value compression]")
-
-            else:
-
-                node.knob('label').setValue("")
-
-        # Check if the node's name contains "Final_Out"
-        if "Final_Out" in node.knob("name").value():
-
-            # Find extension from node
-            extension = node.knob("extension").value()
-
-            procedural_file_path = f"{seq}/{shot}/Nuke/Renders/Main/{version}/{show}_{seq}_{shot}_Main_{version}{padding}.{extension}"
-
-            # Create padding exception for mov
-            if extension == "mov":
-                procedural_file_path = f"{seq}/{shot}/Nuke/Renders/Main/{version}/{show}_{seq}_{shot}_Main_{version}.{extension}"
-
             node.knob("file").setValue(procedural_file_path)
             node.knob("proxy").setValue(procedural_file_path)
             node.knob("reload").execute()

@@ -10,7 +10,6 @@ After installing, launch Nuke and check the Project Settings for documentation. 
 
 All information can be found below as well.
 
-
 ==================README==================
 
 Welcome to Nuke Simple Pipeline (NSP)!  This package is ideal for compositors who are used to a studio pipeline and are starting a personal or freelance project using a vanilla Nuke. The goal of NSP is to automate common tasks in order to reduce manual labour and human error, without getting complicated.
@@ -24,7 +23,6 @@ NSP accomplishes this with:
 -Ability to create reads sourced from selected writes
 -As many relative paths as possible
 -Some handy python scripts
-
 
 =====Getting Started=====
 
@@ -53,23 +51,15 @@ If the name looks correct,  click the "Save Script" button to create the path an
 
 ======================================================================
 
-NSP includes 2 main tools for writing out media that will help you keep things organzied and work faster. These both use relative paths based on the project directory, which is always set to be the Show folder.
+Now onto writing and reading media in your new script.
 
-1.
-"NSP_Precomp"
+======= NSP_Precomp =======
 
-When this tool is created in the nodegraph (ctrl + w), a popup menu will appear asking for the Precomp Name and file extension. The name can contain "_" but not "." or spaces. For the extension, "exr" is default, but you can change it to anything like "png" or "mov". After pressing ok it will create the precomp write node with a relative path to your project directory. On the node, there is a tab titled "NSP" where you can update the Precomp Name and file extension. You must save the script to implement your changes.
+When NSP_Precomp is created in the nodegraph (ctrl + w), a popup menu will appear asking for the Precomp Name and file extension. The name can contain "_" but not "." or spaces. For the extension, "exr" is default, but you can change it to anything like "png" or "mov". After pressing ok it will create the precomp write node with a relative path to your project directory. In the node properties, there is a tab titled "NSP" where you can update the Precomp Name and file extension. You must save the script to implement your changes.
 
-It should look something like:
+The write path should look something like:
 
 Sequence/Shot/Nuke/Renders/PrecompName/v001/Show_Seq_Shot_v001_%04d.exr
-
-2.
-"NSP_Final_Out"
-
-This uses the same logic as the "NSP_Precomp" tool, but will always be called, "Main" and is reserved for your shots final render. You can still change to extension incase you want to write out a video instead of an image sequence for final.
-
-======================================================================
 
 ===== Create Read Nodes from Writes =====
 
@@ -88,9 +78,9 @@ If you want to use DWAA compression to save disk space, all write nodes created 
 ===== Some Useful Python Tools =====
 
 1.
-Force Relative Paths
+Relative Reads
 
-This tool forces selected read nodes to use a relative path. It can be accessed from the top bar under the "PythonTool" menu. To use this correctly, you must copy your media somewhere under your project directory (the Show folder). This could for example be a folder called "Elements" next to the "Scripts" folder inside the "Nuke" folder, or anywhere else you choose so long as it is contained within the project directory.
+This tool is automatic in NSP and does not require your input. Wheever and however you createa  read node, NSP will search for the project path inside the read node's file path and delete it, forcing the path to become relative. This will only work if the media is coming from inside the project folder. If from outisde the project folder, it will use an absolute path.
 
 2.
 Gizmos to Group
@@ -99,10 +89,10 @@ This tool turns selected gizmos in your script into groups. This can be extremel
 
 Why not always use groups and never use gizmos? Because saving everything in the script can massively increase the size of the script file and make it much slower to read/save.
 
-======================================================================
+========================================================================
 
 ===== A Note on "Users" and "Shows" =====
 
-The users and Shows folders inside .nuke/NSP are meant to be used as modular addons. Lets say you are working on a project called AZL and you always want the default resolution in Nuke to be 4096x2480 while you are working on the show. You can set this option in the menu.py file inside the .nuke/NSP/Shows/AZL folder, and then set your Show variable inside the NSP/init.py file to AZL. Nuke will now load the settings you specify from the AZL show folder on startup.
+The Users and Shows folders inside .nuke/NSP are meant to be used as modular addons. Lets say you are working on a project called AZL and you always want the default resolution in Nuke to be 4096x2480 while you are working on the show. You can set this option in the menu.py file inside the .nuke/NSP/Shows/AZL folder, and then set your Show variable inside the NSP/init.py file to AZL. Nuke will now load the settings you specify from the AZL show folder on startup.
 
-This is the same for the .nuke/NSP/Users folder. If you want to use a custom gizmo, python script, or set custom nuke behaviours, you can do it in your Users folder, which will allow you to have different profiles or "Users" you can pick between.
+This is the same for the .nuke/NSP/Users folder. If you want to use a custom gizmo, python script, or set custom nuke behaviours, you can do it in your Users folder, which will allow you to have different profiles or "Users" you can pick between and share without copying your .nuke folder.

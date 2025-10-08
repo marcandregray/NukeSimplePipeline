@@ -22,6 +22,8 @@ nuke.pluginAddPath('Gizmos')
 # "user" and "show" must be set to a folder name that exists inside the "Users" and "Shows" folders respectively inside your .nuke
 # If you don't want to use them, the "user" and "show" variables can be set to "None" (don't include quotes around None).
 # After setting these variables, save this file and restart Nuke for it to work.
+# If there is a settings conflict, user settings will overwrite show settings.
+# For example: If you set the default resolution to HD in your user settings, but the show is set to 4K default, nuke will use HD as default.
 
 ##====================================
 ##====== Set Projects Directory ======

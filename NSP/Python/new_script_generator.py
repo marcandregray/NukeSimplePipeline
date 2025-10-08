@@ -1,4 +1,4 @@
-# new_script_generator_v001
+# new_script_generator_v003
 
 import nuke
 import os
@@ -19,8 +19,9 @@ def calculate_script_name():
     show = thisNode.knob("show").value()
     seq = thisNode.knob("seq").value()
     shot = thisNode.knob("shot").value()
+    version = thisNode.knob("version").value()    
 
-    scriptName = f"{proj}/{show}/{seq}/{shot}/Nuke/Scripts/{show}_{seq}_{shot}_v001.nk"
+    scriptName = f"{proj}/{show}/{seq}/{shot}/Nuke/Scripts/{show}_{seq}_{shot}_v{version}.nk"
 
     thisNode.knob("script_name").setValue(scriptName)
 
