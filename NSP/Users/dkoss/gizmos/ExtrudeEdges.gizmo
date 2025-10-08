@@ -1,0 +1,250 @@
+#! C:/Program Files/Nuke9.0v4/nuke-9.0.4.dll -nx
+version 9.0 v4
+Gizmo {
+ addUserKnob {20 extrudeEdgesADV}
+ addUserKnob {7 sampleThreshold l "sample threshold" t "Declares the\nthreshold from where semi-transparent values are discarded for the\nsample colour to extrude. 0.95 to 0.99 is a valid default to avoid\ncontaminating your sample colour with \"difficult to see\"\nsemi-transparent hues and saturation (within motion-blur & anti-aliasing)."}
+ sampleThreshold 0.95
+ addUserKnob {7 sampleErode l "sample erode" t "Erodes the sample colour\nthreshold line." R -100 0}
+ addUserKnob {6 showSamplePerimeter l "show colour sample perimeter" t "Displays the line of pixels that define the colour sample to extrude\nfrom (for visual cue only)." +STARTLINE}
+ showSamplePerimeter true
+ addUserKnob {26 ""}
+ addUserKnob {14 extrudeSize l "extrude size" t "Defines the pixel\nspread of the extrusion. This value matches the pixel value in the\ndefault \"extrudeEdges\" node, though the sample threshold is what will\ngive you a better colour sample." R 0 100}
+ addUserKnob {20 premultOVER n 1}
+ addUserKnob {7 premultErode l "premult erode" t "Erodes the premult\npatch that goes \"over\" the extruded edges to exclude unwanted blend\ndetail." R -100 0}
+ addUserKnob {7 premultErodeBlur l "premult erode blur" t "Does what it\nsays on the box. Blurs the alpha edge of the eroded premultiplied\npatch." R 0 100}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {6 grainMatte l "give me a regrain matte" t "Sets the alpha\noutput to give you a regrain matte rather than the binary edge extrusion\nmatte." +STARTLINE}
+ grainMatte true
+}
+ CheckerBoard2 {
+  inputs 0
+  format "1828 1556 0 0 1828 1556 2 JCOM_Anamorphic "
+  boxsize 6
+  color0 1
+  color1 {0 0 0 1}
+  color2 {0 0 0 1}
+  color3 1
+  centerlinewidth 0
+  name CheckerBoard1
+  xpos -124
+  ypos 299
+ }
+ Transform {
+  rotate 45
+  scale {1 4}
+  center {914 778}
+  black_outside false
+  name Transform1
+  xpos -124
+  ypos 371
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -489
+  ypos -7
+ }
+ Unpremult {
+  name Unpremult3
+  xpos -489
+  ypos 33
+ }
+set Na5bca800 [stack 0]
+ Grade {
+  channels alpha
+  blackpoint {{max(0,min(sampleThreshold,0.999)) i}}
+  whitepoint {{blackpoint+0.02 i}}
+  white_clamp true
+  name Grade1
+  xpos -489
+  ypos 59
+ }
+ Dilate {
+  channels alpha
+  size {{min(0,sampleErode) i}}
+  name Dilate1
+  xpos -489
+  ypos 95
+ }
+ Premult {
+  name Premult8
+  xpos -489
+  ypos 131
+ }
+set N7e373c00 [stack 0]
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name _aaaa_
+  xpos -216
+  ypos 131
+ }
+set N7e373800 [stack 0]
+ FilterErode {
+  size 0.6
+  filter gaussian
+  name FilterErode2
+  xpos -174
+  ypos 161
+ }
+push $N7e373800
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge2
+  xpos -216
+  ypos 231
+ }
+ Grade {
+  multiply 10
+  white_clamp true
+  name Grade2
+  xpos -216
+  ypos 257
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha red
+  name _111r_
+  xpos -216
+  ypos 283
+ }
+ Multiply {
+  value {1 1 0.2190000117 1}
+  name Multiply1
+  xpos -216
+  ypos 309
+ }
+ Premult {
+  name Premult1
+  xpos -216
+  ypos 345
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  mix 0.94
+  name Merge3
+  xpos -216
+  ypos 371
+ }
+push $Na5bca800
+ Dot {
+  name Dot2
+  xpos -355
+  ypos 74
+ }
+ FilterErode {
+  size {{max(0,-premultErode) i}}
+  name FilterErode1
+  xpos -391
+  ypos 102
+ }
+ Blur {
+  channels alpha
+  size {{max(0,premultErodeBlur)}}
+  name Blur10
+  xpos -391
+  ypos 157
+ }
+ Premult {
+  name Premult12
+  xpos -391
+  ypos 193
+ }
+set N63ae8400 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue black
+  name _000a_
+  xpos -488
+  ypos 243
+ }
+push $N63ae8400
+push $N7e373c00
+ Blur {
+  size {{max(0,extrudeSize.w) i} {max(0,extrudeSize.h) i}}
+  name Blur8
+  xpos -489
+  ypos 157
+ }
+ Unpremult {
+  name Unpremult2
+  xpos -489
+  ypos 193
+ }
+ Merge2 {
+  inputs 2
+  name Merge18
+  xpos -391
+  ypos 219
+ }
+set N80ecb400 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha red
+  name __r00r__1
+  note_font "DejaVu Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold\nBold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold\nBold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold\nBold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -332
+  ypos 248
+ }
+ Unpremult {
+  name Unpremult1
+  xpos -332
+  ypos 274
+ }
+set N80ecac00 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  output {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name stencil1
+  xpos -488
+  ypos 269
+ }
+push $N80ecac00
+ Switch {
+  inputs 2
+  which {{grainMatte i}}
+  name Switch2
+  xpos -332
+  ypos 314
+ }
+push $N80ecb400
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy3
+  xpos -391
+  ypos 392
+ }
+set N80eca000 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -216
+  ypos 397
+ }
+push $N80eca000
+ Switch {
+  inputs 2
+  which {{showSamplePerimeter i}}
+  name Switch1
+  xpos -296
+  ypos 465
+ }
+ Output {
+  name Output1
+  xpos -296
+  ypos 512
+ }
+end_group

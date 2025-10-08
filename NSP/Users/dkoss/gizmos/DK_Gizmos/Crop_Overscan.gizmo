@@ -1,0 +1,198 @@
+#! /home/jc/CUSTOM_PROGRAMS/FoundryNuke/Nuke13.2v7/libnuke-13.2.7.so -nx
+version 13.2 v7
+Gizmo {
+ name Crop_Overscan
+ tile_color 0xc288ccff
+ addUserKnob {20 User}
+ addUserKnob {41 based l "Based on" T Control.based}
+ addUserKnob {41 type l Type T Control.type}
+ addUserKnob {41 overscan1 l % T Control.overscan1}
+ addUserKnob {41 overscan2 l Pixels T Control.overscan2}
+ addUserKnob {26 overscan3 l Custom T " "}
+ addUserKnob {41 manualx l x -STARTLINE T Control.manualx}
+ addUserKnob {41 manualy l y -STARTLINE T Control.manualy}
+ addUserKnob {41 manualr l r -STARTLINE T Control.manualr}
+ addUserKnob {41 manualt l t -STARTLINE T Control.manualt}
+ addUserKnob {26 ""}
+ addUserKnob {41 reformat T Control.reformat}
+ addUserKnob {41 intersect -STARTLINE T Control.intersect}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T Control.black_outside}
+ addUserKnob {26 ""}
+ addUserKnob {26 result l Results T " "}
+ addUserKnob {41 resultx l x -STARTLINE T Control.resultx}
+ addUserKnob {41 resulty l y -STARTLINE T Control.resulty}
+ addUserKnob {41 resultr l r -STARTLINE T Control.resultr}
+ addUserKnob {41 resultt l t -STARTLINE T Control.resultt}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -433
+  ypos -700
+ }
+ Dot {
+  name Dot6
+  xpos -399
+  ypos -631
+ }
+set N3de41890 [stack 0]
+ Dot {
+  name Dot5
+  xpos -518
+  ypos -631
+ }
+set N3de46170 [stack 0]
+ Dot {
+  name Dot4
+  xpos -625
+  ypos -631
+ }
+set N3de4ae60 [stack 0]
+ Dot {
+  name Dot3
+  xpos -744
+  ypos -631
+ }
+set N3de4fbd0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -875
+  ypos -631
+ }
+ Crop {
+  box {{"Control.based < 1 ? format.x - Control.manualx : bbox.x - Control.manualx"} {"Control.based < 1 ? format.y - Control.manualy : bbox.y - Control.manualy"} {"Control.based < 1 ? format.r + Control.manualr : bbox.r + Control.manualr"} {"Control.based < 1 ? format.t + Control.manualt : bbox.t + Control.manualt"}}
+  reformat {{parent.Control.reformat}}
+  intersect {{parent.Control.intersect}}
+  crop {{parent.Control.black_outside}}
+  name Crop5
+  label manual
+  xpos -909
+  ypos -552
+ }
+push $N3de4fbd0
+ Crop {
+  box {{"Control.based < 1 ? format.x - Control.overscan2.w : bbox.x - Control.overscan2.w"} {"Control.based < 1 ? format.y - Control.overscan2.h : bbox.y - Control.overscan2.h"} {"Control.based < 1 ? format.r + Control.overscan2.w : bbox.r + Control.overscan2.w"} {"Control.based < 1 ? format.t + Control.overscan2.h : bbox.t + Control.overscan2.h"}}
+  reformat {{parent.Control.reformat}}
+  intersect {{parent.Control.intersect}}
+  crop {{parent.Control.black_outside}}
+  name Crop4
+  label px
+  xpos -778
+  ypos -549
+ }
+push $N3de4ae60
+ Crop {
+  box {{"Control.based < 1 ? format.x - height * Control.overscan1.w/100 : bbox.x - height * Control.overscan1.w/100"} {"Control.based < 1 ? format.y - height * Control.overscan1.h/100 : bbox.y - height * Control.overscan1.h/100"} {"Control.based < 1 ? format.r + height * Control.overscan1.w/100 : bbox.r + height * Control.overscan1.w/100"} {"Control.based < 1 ? format.t + height * Control.overscan1.h/100 : bbox.t + height * Control.overscan1.h/100"}}
+  reformat {{parent.Control.reformat}}
+  intersect {{parent.Control.intersect}}
+  crop {{parent.Control.black_outside}}
+  name Crop3
+  label "height %"
+  xpos -659
+  ypos -552
+ }
+push $N3de46170
+ Crop {
+  box {{"Control.based < 1 ? format.x - width * Control.overscan1.w/100 : bbox.x - width * Control.overscan1.w/100"} {"Control.based < 1 ? format.y - width * Control.overscan1.h/100 : bbox.y - width * Control.overscan1.h/100"} {"Control.based < 1 ? format.r + width * Control.overscan1.w/100 : bbox.r + width * Control.overscan1.w/100"} {"Control.based < 1 ? format.t + width * Control.overscan1.h/100 : bbox.t + width * Control.overscan1.h/100"}}
+  reformat {{parent.Control.reformat}}
+  intersect {{parent.Control.intersect}}
+  crop {{parent.Control.black_outside}}
+  name Crop2
+  label "width %"
+  xpos -552
+  ypos -548
+ }
+push $N3de41890
+ Crop {
+  box {{"Control.based < 1 ? format.x - width * Control.overscan1.w/100 : bbox.x - width * Control.overscan1.w/100"} {"Control.based < 1 ? format.y - height * Control.overscan1.h/100 : bbox.y - height * Control.overscan1.w/100"} {"Control.based < 1 ? format.r + width * Control.overscan1.w/100 : bbox.r + width * Control.overscan1.w/100"} {"Control.based < 1 ? format.t + height * Control.overscan1.h/100 : bbox.t + height * Control.overscan1.w/100"}}
+  reformat {{parent.Control.reformat}}
+  intersect {{parent.Control.intersect}}
+  crop {{parent.Control.black_outside}}
+  name Crop1
+  label "width/height %"
+  xpos -433
+  ypos -549
+ }
+ Switch {
+  inputs 5
+  which {{Control.type}}
+  name Switch1
+  label Type
+  xpos -433
+  ypos -326
+ }
+set N3de92fa0 [stack 0]
+ Output {
+  name Output
+  xpos -433
+  ypos -226
+ }
+push $N3de92fa0
+ NoOp {
+  name Results
+  xpos -248
+  ypos -320
+  addUserKnob {20 User}
+  addUserKnob {3 bboxx l x}
+  bboxx {{bbox.x}}
+  addUserKnob {3 bboxy l y -STARTLINE}
+  bboxy {{bbox.y}}
+  addUserKnob {3 bboxr l r -STARTLINE}
+  bboxr {{bbox.r}}
+  addUserKnob {3 bboxt l t -STARTLINE}
+  bboxt {{bbox.t}}
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label "Control.based < 1 ? format.x - width * Control.overscan1.w/100 : bbox.x - width * Control.overscan1.w/100\nControl.based < 1 ? format.y - height * Control.overscan1.h/100 : bbox.y - height * Control.overscan1.w/100\nControl.based < 1 ? format.r + width * Control.overscan1.w/100 : bbox.r + width * Control.overscan1.w/100\nControl.based < 1 ? format.t + height * Control.overscan1.h/100 : bbox.t + height * Control.overscan1.w/100"
+  xpos -221
+  ypos -685
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  label "format.x - width * Control.overscan1.w/100\nformat.y - height * Control.overscan1.h/100\nformat.r + width * Control.overscan1.w/100\nformat.t + height * Control.overscan1.h/100"
+  xpos -222
+  ypos -773
+ }
+ NoOp {
+  inputs 0
+  name Control
+  xpos -241
+  ypos -492
+  addUserKnob {20 User}
+  addUserKnob {4 based l "Based on" M {format bbox}}
+  based bbox
+  addUserKnob {4 type l Type M {"width/height %" "width %" "height %" pixels custom "" "" "" ""}}
+  type pixels
+  addUserKnob {14 overscan1 l % R 0 100}
+  overscan1 10
+  addUserKnob {14 overscan2 l Pixels R 0 100}
+  overscan2 100
+  addUserKnob {26 overscan3 l Custom T " "}
+  addUserKnob {3 manualx l x -STARTLINE}
+  manualx 150
+  addUserKnob {3 manualy l y -STARTLINE}
+  manualy 150
+  addUserKnob {3 manualr l r -STARTLINE}
+  manualr 150
+  addUserKnob {3 manualt l t -STARTLINE}
+  manualt 150
+  addUserKnob {26 ""}
+  addUserKnob {6 reformat +STARTLINE}
+  addUserKnob {6 intersect -STARTLINE}
+  addUserKnob {6 black_outside l "black outside" -STARTLINE}
+  black_outside true
+  addUserKnob {26 ""}
+  addUserKnob {26 result l Results T " "}
+  addUserKnob {3 resultx l x -STARTLINE}
+  resultx {{Results.bboxx}}
+  addUserKnob {3 resulty l y -STARTLINE}
+  resulty {{Results.bboxy}}
+  addUserKnob {3 resultr l r -STARTLINE}
+  resultr {{Results.bboxr}}
+  addUserKnob {3 resultt l t -STARTLINE}
+  resultt {{Results.bboxt}}
+ }
+end_group
