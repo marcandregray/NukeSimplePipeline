@@ -1,7 +1,7 @@
 # ----------------------------------
 # menu.py
 # Version: 1.1.3
-# Last Updated: 2025/10/05
+# Last Updated: 2025/10/09
 # ----------------------------------
 
 # --------------------------------------------------------------
@@ -31,7 +31,7 @@ import set_read_node_label
 nuke.knobDefault("Root.project_directory", "[file dir [file dir [file dir [file dir [file dir [value root.name]]]]]]")
 
 #Add documentation to script comment section
-nuke.knobDefault("Root.label", "Check out the README toolset in the node graph for NSP details.")
+nuke.knobDefault("Root.label", "Check out the NSP_README toolset in the node graph for NSP details.")
 
 # -------------------------------------------------------------
 #  Custom Behaviours  :::::::::::::::::::::::::::::::::::::::::

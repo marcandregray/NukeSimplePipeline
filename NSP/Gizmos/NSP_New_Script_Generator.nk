@@ -10,6 +10,7 @@ BackdropNode {
  bdheight 234
  addUserKnob {20 User}
  addUserKnob {1 proj l "Projects Path"}
+ proj Path/To/Projects
  addUserKnob {1 show l Show}
  show Show
  addUserKnob {1 seq l Sequence}

@@ -1,4 +1,4 @@
-# update_write_nodes_v005
+# update_write_nodes_v006
 
 import nuke
 import os
@@ -16,8 +16,8 @@ def update_write_nodes():
 
     for node in writeNodes:
 
-        # Check if the node's name contains "Precomp_"
-        if "Precomp_" in node.knob("name").value():
+        # Check if the node contains the "precomp_name" and "extension" knobs
+        if node.knob("precomp_name") and node.knob("extension"):
 
             # Find precompName and extension from node
             precompName = node.knob("precomp_name").value()
@@ -29,7 +29,7 @@ def update_write_nodes():
             if extension == "mov":
                 procedural_file_path = f"{seq}/{shot}/Nuke/Renders/{precompName}/{version}/{show}_{seq}_{shot}_{precompName}_{version}.{extension}"
 
-            node.knob('name').setValue("Precomp_" + precompName)
+            node.knob('name').setValue("NSP_Precomp_" + precompName)
             node.knob("file").setValue(procedural_file_path)
             node.knob("proxy").setValue(procedural_file_path)
             node.knob("reload").execute()

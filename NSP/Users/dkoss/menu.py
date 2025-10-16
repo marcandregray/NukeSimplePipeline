@@ -126,7 +126,6 @@ nuke.menu('Nodes').addCommand('Channel/ShuffleCopy', 'nuke.createNode("ShuffleCo
 MyToolsMenu = nuke.menu('Nodes').addMenu('My Tools', icon="DK.png")
 
 # My Tools
-MyToolsMenu.addCommand('ReformatCG', 'nuke.createNode("Reformat_CG.gizmo")')
 MyToolsMenu.addCommand('MilkShake', 'nuke.createNode("MilkShake.gizmo")')
 MyToolsMenu.addCommand('Orbital_Camera', 'nuke.createNode("Orbital_Camera.nk")')
 MyToolsMenu.addCommand('ChannelChooser', 'nuke.createNode("ChannelChooser.gizmo")')

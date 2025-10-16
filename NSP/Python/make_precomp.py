@@ -1,4 +1,4 @@
-# make_precomp_v006
+# make_precomp_v007
 
 import nuke
 
@@ -40,12 +40,12 @@ def make_precomp():
 
 		#Create write node
 		writeNode = nuke.createNode('NSP_Precomp.nk')
-		writeNode.knob('name').setValue("Precomp_" + precompName)
+		writeNode.knob('name').setValue("NSP_Precomp_" + precompName)
 		writeNode.knob('file').setValue(procedural_file_path)
 		writeNode.knob('proxy').setValue(procedural_file_path)
 		writeNode.knob('channels').setValue("rgba")
 		writeNode.knob('create_directories').setValue(1)
-		writeNode.knob('precomp_name').setValue(precompName)		
+		writeNode.knob('precomp_name').setValue(precompName)
 		writeNode.knob('extension').setValue(extension)
 
 		if extension == "exr":
