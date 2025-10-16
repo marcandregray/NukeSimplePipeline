@@ -1,0 +1,13 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+Write {
+ channels rgba
+ create_directories true
+ name Write1
+ selected true
+ addUserKnob {20 nsp l NSP}
+ addUserKnob {1 precomp_name l "Precomp Name"}
+ addUserKnob {1 extension l Extension}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 text l "" +STARTLINE T "Save your script to update write nodes"}
+}

@@ -1,0 +1,27 @@
+set cut_paste_input [stack 0]
+BackdropNode {
+ inputs 0
+ name New_Script_Generator
+ label "Project Path: \[value proj]\nShow: \[value show]\nSequence: \[value seq]\nShot: \[value shot]\nVersion: \[value version]\nScript Name: \[value script_name]\n<w>"
+ note_font "DejaVu Sans Bold"
+ note_font_size 25
+ selected true
+ bdwidth 707
+ bdheight 234
+ addUserKnob {20 User}
+ addUserKnob {1 proj l "Projects Path"}
+ proj Path/To/Projects
+ addUserKnob {1 show l Show}
+ show Show
+ addUserKnob {1 seq l Sequence}
+ seq Seq
+ addUserKnob {1 shot l Shot}
+ shot Shot
+ addUserKnob {1 version l Version}
+ version 001
+ addUserKnob {26 ""}
+ addUserKnob {1 script_name l "Script Name"}
+ addUserKnob {26 ""}
+ addUserKnob {22 calc l "Calculate Script Name" T new_script_generator.calculate_script_name() +STARTLINE}
+ addUserKnob {22 save l "Save Script" -STARTLINE T new_script_generator.save_script()}
+}
