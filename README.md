@@ -80,7 +80,7 @@ If you want to use DWAA compression to save disk space, all write nodes created 
 1.
 Relative Reads
 
-This tool is automatic in NSP and does not require your input. Wheever and however you createa  read node, NSP will search for the project path inside the read node's file path and delete it, forcing the path to become relative. This will only work if the media is coming from inside the project folder. If from outisde the project folder, it will use an absolute path.
+This tool is automatic in NSP and does not require your input. Whenever and however you createa  read node, NSP will search for the project path inside the read node's file path and delete it, forcing the path to become relative. This will only work if the media is coming from inside the project folder. If from outisde the project folder, it will use an absolute path.
 
 2.
 Gizmos to Group
