@@ -21,13 +21,13 @@ reduce manual labour and human error, without getting complicated.
 
 NSP accomplishes this with:
 
--Ability to control "Show" and "User" environoment
--Automatic Script creation with procedural paths and names
--Automatic Read and Write naming and creation
--Automatic versioning of writes to always match script version
--Ability to create reads sourced from selected writes
--As many relative paths as possible
--Some handy python scripts
+-Ability to control "Show" and "User" environoment\
+-Automatic Script creation with procedural paths and names\
+-Automatic Read and Write naming and creation\
+-Automatic versioning of writes to always match script version\
+-Ability to create reads sourced from selected writes\
+-As many relative paths as possible\
+-Some handy python scripts\
 
 
 ## Getting Started
