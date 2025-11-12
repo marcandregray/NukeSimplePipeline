@@ -1,4 +1,4 @@
-###### Installation
+# Installation
 
 To install, copy the "NSP" folder into your .nuke folder. You must also add the following line inside your .nuke/init.py file:
 nuke.pluginAddPath('NSP')
@@ -8,7 +8,7 @@ https://support.foundry.com/hc/en-us/articles/207271649-Q100048-Locating-the-def
 
 After installing, launch Nuke and create the "NSP_README" toolset inside the nodegraph for documentation. All information can also be found below.
 
-###### How to Use NSP
+# How to Use NSP
 ## What is NSP?
 
 Welcome to Nuke Simple Pipeline. This package is ideal for compositors who are used to a studio pipeline and are starting a personal or freelance project using a vanilla Nuke. The goal of NSP is to automate common tasks in order to reduce manual labour and human error, without getting complicated.
