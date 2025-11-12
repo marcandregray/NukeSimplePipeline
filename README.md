@@ -1,4 +1,4 @@
-================INSTALL================
+######================INSTALL================
 
 To install, copy the "NSP" folder to your .nuke folder.
 
