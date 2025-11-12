@@ -1,16 +1,17 @@
 ## Installation
 
-To install, copy the "NSP" folder to your .nuke folder.
-
-You must also include the following line inside your .nuke/init.py file:
-
+To install, copy the "NSP" folder into your .nuke folder.
+You must also add the following line inside your .nuke/init.py file:
 nuke.pluginAddPath('NSP')
 
-After installing, launch Nuke and check the Project Settings for documentation. There is also a "NSP_README" toolset that you can bring in with the nodegraph tab menu.
+If you don’t know how to find your .nuke folder, check out this guide:
+https://support.foundry.com/hc/en-us/articles/207271649-Q100048-Locating-the-default-nuke-directory
 
-All information can be found below as well.
+After installing, launch Nuke and create the "NSP_README" toolset inside the nodegraph for documentation.
 
-## Getting Started
+All information can also be found below.
+
+## What is NSP?
 
 Welcome to Nuke Simple Pipeline (NSP)! This package is ideal for compositors
 who are used to a studio pipeline and are starting a personal or freelance project
@@ -28,7 +29,7 @@ NSP accomplishes this with:
 -Some handy python scripts
 
 
-=====Getting Started=====
+## Getting Started
 
 1. To making NSP work, create the "NSP_Settings" node inside Nuke.
 
@@ -74,7 +75,7 @@ and save the script inside.
 
 Now onto writing and reading media in your new script.
 
-======= NSP_Precomp =======
+## NSP_Precomp
 
 When NSP_Precomp is created in the nodegraph (ctrl + w), a popup menu
 will appear asking for the Precomp Name and file extension. For the extension,
@@ -99,7 +100,7 @@ When you save or version up your script, NSP_Precomp nodes will automatically
 update to match the current script version. With this, v025 of a precomp
 will always be from v025 of the script!
 
-===== DWAA Compression =====
+## DWAA Compression
 
 If you want to use DWAA compression to save disk space, all write nodes
 created with NSP using the exr extension will always have the
@@ -109,7 +110,7 @@ a reminder for if a file was created using DWAA since it can be almost
 impossible to tell just by looking at the image. Usually you will want to
 switch back to Zip (1 scanline) for your final renders to retain pixel accuracy.
 
-===== Some Useful Python Tools =====
+## Some Useful Python Tools
 
 1. Relative Reads
 
@@ -134,7 +135,7 @@ and make it much slower to read/save.
 
 ==============================================
 
-===== A Note on "Users" and "Shows" =====
+## A Note on "Users" and "Shows"
 
 The Users and Shows folders inside .nuke/NSP are meant to be used as
 modular addons. Lets say you are working on a project called AZL and
