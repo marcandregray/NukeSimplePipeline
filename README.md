@@ -14,10 +14,7 @@ All information can also be found below.
 
 ## What is NSP?
 
-Welcome to Nuke Simple Pipeline (NSP)! This package is ideal for compositors
-who are used to a studio pipeline and are starting a personal or freelance project
-using a vanilla Nuke. The goal of NSP is to automate common tasks in order to
-reduce manual labour and human error, without getting complicated.
+Welcome to Nuke Simple Pipeline (NSP)! This package is ideal for compositors who are used to a studio pipeline and are starting a personal or freelance project using a vanilla Nuke. The goal of NSP is to automate common tasks in order to reduce manual labour and human error, without getting complicated.
 
 NSP accomplishes this with:
 
