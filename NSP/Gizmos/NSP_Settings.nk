@@ -1,0 +1,19 @@
+set cut_paste_input [stack 0]
+push $cut_paste_input
+NoOp {
+ name NSP_Settings
+ selected true
+ addUserKnob {20 User}
+ addUserKnob {2 newDir l "Projects Directory"}
+ addUserKnob {26 currentDir l "Current: " T ""}
+ addUserKnob {26 ""}
+ addUserKnob {4 newUser l User M {""}}
+ addUserKnob {26 currentUser l "Current: " T ""}
+ addUserKnob {26 ""}
+ addUserKnob {4 newShow l Show M {""}}
+ addUserKnob {26 currentShow l "Current: " T ""}
+ addUserKnob {26 ""}
+ addUserKnob {26 note l "           " T "You must restart Nuke for your changes to apply"}
+ addUserKnob {22 saveSettings l "Save Settings" T NSP_Settings.update_settings() +STARTLINE}
+ addUserKnob {22 saveSettingsExit l "Save Settings and Exit" -STARTLINE T NSP_Settings.update_settings_exit()}
+}

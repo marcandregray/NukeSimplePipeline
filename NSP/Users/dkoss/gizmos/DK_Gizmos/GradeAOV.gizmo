@@ -1,0 +1,219 @@
+version 13.2 v7
+Gizmo {
+ name GradeAOV
+ inputs 2
+ label "\[value layer]"
+ addUserKnob {20 User}
+ addUserKnob {41 layer l Layer T Shuffle1.in}
+ addUserKnob {6 solo l Solo -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation T ColorCorrect2.saturation}
+ addUserKnob {41 blackpoint T Grade1.blackpoint}
+ addUserKnob {41 whitepoint T Grade1.whitepoint}
+ addUserKnob {41 black l lift T Grade1.black}
+ addUserKnob {41 white l gain T Grade1.white}
+ addUserKnob {41 multiply T Grade1.multiply}
+ addUserKnob {41 add l offset T Grade1.add}
+ addUserKnob {41 gamma T Grade1.gamma}
+ addUserKnob {41 black_clamp l "black clamp" T Grade1.black_clamp}
+ addUserKnob {41 white_clamp l "white clamp" -STARTLINE T Grade1.white_clamp}
+ addUserKnob {26 ""}
+ addUserKnob {26 "" l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge1.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge1.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge1.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge1.fringe}
+ addUserKnob {41 unpremult l "(un)premult by" T Grade1.unpremult}
+ addUserKnob {41 invert_unpremult l invert -STARTLINE T Grade1.invert_unpremult}
+ addUserKnob {41 mix T Merge1.mix}
+}
+ Input {
+  inputs 0
+  name mask
+  label "\[value number]"
+  xpos -149
+  ypos 263
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input
+  label "\[value number]"
+  xpos -411
+  ypos -975
+ }
+ Dot {
+  name Dot1
+  xpos -377
+  ypos -793
+ }
+set N1e87ef00 [stack 0]
+ Dot {
+  name Dot5
+  xpos -674
+  ypos -793
+ }
+set N22e6e570 [stack 0]
+ Dot {
+  name Dot4
+  xpos -674
+  ypos -585
+ }
+set N20174f30 [stack 0]
+ Dot {
+  name Dot10
+  xpos -495
+  ypos -585
+ }
+ Dot {
+  name Dot11
+  xpos -495
+  ypos 139
+ }
+push $N22e6e570
+ Dot {
+  name Dot3
+  xpos -950
+  ypos -793
+ }
+ Shuffle1 {
+  in none
+  name Shuffle1
+  label "\[value in]"
+  xpos -984
+  ypos -733
+ }
+ Dot {
+  name Dot6
+  xpos -950
+  ypos -650
+ }
+set Ncc3bfad0 [stack 0]
+ Dot {
+  name Dot8
+  xpos -1127
+  ypos -650
+ }
+ Dot {
+  name Dot12
+  xpos -1127
+  ypos -154
+ }
+push $N20174f30
+push $Ncc3bfad0
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos -984
+  ypos -596
+ }
+ Dot {
+  name Dot9
+  xpos -950
+  ypos -433
+ }
+set N22f65a10 [stack 0]
+ ColorCorrect {
+  unpremult {{{parent.Grade1.unpremult}}}
+  invert_unpremult {{parent.Grade1.invert_unpremult}}
+  name ColorCorrect2
+  xpos -984
+  ypos -331
+ }
+ Grade {
+  name Grade1
+  xpos -984
+  ypos -243
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -984
+  ypos -165
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove3
+  xpos -984
+  ypos -77
+ }
+ Shuffle1 {
+  out {{{parent.Shuffle1.in}}}
+  name Shuffle3
+  label "\[value in]"
+  xpos -984
+  ypos -51
+ }
+ Dot {
+  name Dot7
+  xpos -950
+  ypos 49
+ }
+push $N22f65a10
+push $N20174f30
+ Remove {
+  operation keep
+  channels rgb
+  name Remove2
+  xpos -708
+  ypos -525
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  Achannels rgb
+  Bchannels rgb
+  output rgb
+  name Merge2
+  xpos -708
+  ypos -437
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  also_merge all
+  name Merge3
+  xpos -708
+  ypos 45
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -708
+  ypos 128
+ }
+ Dot {
+  name Dot2
+  xpos -674
+  ypos 274
+ }
+push $N1e87ef00
+ Merge2 {
+  inputs 2+1
+  operation copy
+  also_merge all
+  name Merge1
+  xpos -411
+  ypos 270
+ }
+ Shuffle1 {
+  in {{{parent.Shuffle1.in}}}
+  name Shuffle2
+  label "\[value in]"
+  xpos -411
+  ypos 412
+  disable {{1-solo}}
+ }
+ Output {
+  name Output1
+  xpos -411
+  ypos 551
+ }
+end_group

@@ -1,0 +1,755 @@
+Group {
+ name ImagePlane3D
+ knobChanged "\nimport numpy as np\n\ngroupNode = nuke.thisNode()\ngroupNode.begin()\n\nctl = nuke.toNode(\"Parameters\")\ncamPosNode = nuke.toNode(\"Cam_Position\")\nINVMatrix = nuke.toNode(\"INV_Matrix\")\n\nx_rot = np.radians(ctl.knob('rotate').getValue()\[0])\ny_rot = np.radians(ctl.knob('rotate').getValue()\[1])\nz_depth = -ctl.knob('Depth_Para').getValue()\n\nfocal_len = ctl.knob('Ref_Lens').getValue()\nhoriz_aperture = ctl.knob('HAperture').getValue()\nvert_aperture = ctl.knob('VAperture').getValue()\n\nfov_y = np.arctan(horiz_aperture / (2 * focal_len))\nfov_x = np.arctan(vert_aperture / (2 * focal_len))\n\nn = np.array(\[np.sin(y_rot) * np.cos(x_rot), -np.sin(x_rot), np.cos(y_rot) * np.cos(x_rot)])\np_0 = np.array(\[0, 0, z_depth])\n\nxyzs = \[]\nfor i in range(-1,2,2):\n    for j in range(-1,2,2):\n        phi = i * fov_y\n        theta = j * fov_x\n\n        l = np.array(\[np.tan(phi), np.tan(theta), -1])\n\n        xyzs.append(np.dot(p_0, n) * l / np.dot(l, n))\n\nnuke.toNode('to1_REF').knob('translate').setValue(xyzs\[0])\nnuke.toNode('to2_REF').knob('translate').setValue(xyzs\[2])\nnuke.toNode('to3_REF').knob('translate').setValue(xyzs\[3])\nnuke.toNode('to4_REF').knob('translate').setValue(xyzs\[1])\n"
+ selected true
+ xpos -790
+ ypos 395
+ addUserKnob {20 User}
+ addUserKnob {41 format l "output format" T Format.format}
+ addUserKnob {68 Method M {Match-Move Stabilize}}
+ addUserKnob {26 ""}
+ addUserKnob {3 Reference_Frame l "Reference Frame"}
+ Reference_Frame 1
+ addUserKnob {22 curFrame l "set to current frame" -STARTLINE T "frame = nuke.frame()\n\nnuke.thisNode().knob('Reference_Frame').setValue(frame)"}
+ addUserKnob {13 Rotation}
+ addUserKnob {7 Depth R 1 100}
+ Depth 2
+ addUserKnob {6 OutputD l "Output Depth.z" +STARTLINE}
+ addUserKnob {26 warning l "" -STARTLINE T "Animating the knobs will break the formula"}
+ addUserKnob {26 ""}
+ addUserKnob {3 Overscan}
+ Overscan 200
+ addUserKnob {6 Crop -STARTLINE}
+ Crop true
+ addUserKnob {26 ""}
+ addUserKnob {41 filter T Trans_Settings1.filter}
+ addUserKnob {41 clamp -STARTLINE T MB_CTRL.clamp}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T MB_CTRL.black_outside}
+ addUserKnob {41 motionblur T Trans_Settings1.motionblur}
+ addUserKnob {41 shutter T Trans_Settings1.shutter}
+ addUserKnob {41 shutter_offset l "shutter offset" T Trans_Settings1.shutter_offset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Trans_Settings1.shuttercustomoffset}
+ addUserKnob {26 ""}
+ addUserKnob {22 RefeshAll l "Refresh all 3dImagePlane nodes" T "nuke.root().begin()\n\nfor node in nuke.allNodes():\n    if \"IP3D\" in node.knobs().keys():     \n        node.knob('Refresh').execute()" +STARTLINE}
+ addUserKnob {22 Refresh -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {3 IP3D +INVISIBLE}
+ addUserKnob {26 INFO l "" +STARTLINE T "v1.1 (c) Riley Gray 2018"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x3a6a44ff
+  label "Screen Space Calculation"
+  note_font_size 72
+  xpos 1629
+  ypos 1046
+  bdwidth 1527
+  bdheight 527
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x575785ff
+  label Preview
+  note_font_size 71
+  xpos 1445
+  ypos 120
+  bdwidth 287
+  bdheight 557
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  label "Python Callbacks ===>>>"
+  note_font_size 18
+  xpos 611
+  ypos 1442
+  bdwidth 245
+  bdheight 54
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x725252ff
+  label "Card Position"
+  note_font_size 72
+  xpos 2142
+  ypos 119
+  bdwidth 769
+  bdheight 724
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  label "<<<===Python Callbacks"
+  note_font_size 24
+  xpos 2580
+  ypos 428
+  bdwidth 310
+  bdheight 63
+ }
+ NoOp {
+  inputs 0
+  name to3Calc
+  xpos 2139
+  ypos 1363
+  addUserKnob {20 User}
+  addUserKnob {7 FOV}
+  FOV {{atan(to3.world_matrix.11/to3.world_matrix.3)}}
+  addUserKnob {7 VertFOV}
+  VertFOV {{atan(to3.world_matrix.11/to3.world_matrix.7)}}
+  addUserKnob {26 ""}
+  addUserKnob {7 test2}
+  test2 {{to3.world_matrix.11(Parameters.Ref_Frame)/tan(FOV)/-1}}
+  addUserKnob {7 test3}
+  test3 {{to3.world_matrix.11(Parameters.Ref_Frame)/tan(VertFOV)/-1}}
+ }
+ NoOp {
+  inputs 0
+  name to4Calc
+  xpos 2142
+  ypos 1469
+  addUserKnob {20 User}
+  addUserKnob {7 FOV}
+  FOV {{atan(to4.world_matrix.11/to4.world_matrix.3)}}
+  addUserKnob {7 VertFOV}
+  VertFOV {{atan(to4.world_matrix.11/to4.world_matrix.7)}}
+  addUserKnob {26 ""}
+  addUserKnob {7 test2}
+  test2 {{to4.world_matrix.11(Parameters.Ref_Frame)/tan(FOV)/-1}}
+  addUserKnob {7 test3}
+  test3 {{to4.world_matrix.11(Parameters.Ref_Frame)/tan(VertFOV)/-1}}
+ }
+ NoOp {
+  inputs 0
+  name to2Calc
+  xpos 2140
+  ypos 1265
+  addUserKnob {20 User}
+  addUserKnob {7 FOV}
+  FOV {{atan(to2.world_matrix.11/to2.world_matrix.3)}}
+  addUserKnob {7 VertFOV}
+  VertFOV {{atan(to2.world_matrix.11/to2.world_matrix.7)}}
+  addUserKnob {26 ""}
+  addUserKnob {7 test2}
+  test2 {{to2.world_matrix.11(Parameters.Ref_Frame)/tan(FOV)/-1}}
+  addUserKnob {7 test3}
+  test3 {{to2.world_matrix.11(Parameters.Ref_Frame)/tan(VertFOV)/-1}}
+ }
+ Input {
+  inputs 0
+  name Image
+  xpos 1104
+  ypos -33
+ }
+ Dot {
+  name Dot13
+  xpos 1138
+  ypos 209
+ }
+set N10c06b00 [stack 0]
+ Dot {
+  name Dot20
+  xpos 1138
+  ypos 1133
+ }
+set N10c06400 [stack 0]
+ Dot {
+  name Dot21
+  xpos 1270
+  ypos 1133
+ }
+ Expression {
+  temp_name0 LLCorner
+  temp_expr0 (1-x/width)*(1-y/height)
+  temp_name1 LRCorner
+  temp_expr1 (x/width)*(1-y/height)
+  temp_name2 URCorner
+  temp_expr2 (x/width)*(y/height)
+  temp_name3 ULCorner
+  temp_expr3 (1-x/width)*(y/height)
+  expr0 1/((to1D*LLCorner+to2D*LRCorner+to3D*URCorner+to4D*ULCorner)/-1)
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
+  channel3 {none none none -rgba.alpha}
+  name Depth_Calc
+  xpos 1236
+  ypos 1169
+  addUserKnob {20 User}
+  addUserKnob {7 to1D}
+  to1D {{parent.to1.world_matrix.11}}
+  addUserKnob {7 to2D}
+  to2D {{parent.to2.world_matrix.11}}
+  addUserKnob {7 to3D}
+  to3D {{parent.to3.world_matrix.11}}
+  addUserKnob {7 to4D}
+  to4D {{parent.to4.world_matrix.11}}
+ }
+ Dot {
+  name Dot22
+  xpos 1270
+  ypos 1227
+ }
+push $N10c06400
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 depth.Z
+  name Copy1
+  xpos 1104
+  ypos 1218
+  disable {{parent.OutputD?0:1}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{Format.width}}
+  box_height {{Format.height}}
+  box_fixed true
+  box_pixel_aspect {{Format.pixel_aspect}}
+  pbb true
+  name FormatChild
+  xpos 1104
+  ypos 1415
+ }
+ CornerPin2D {
+  to1 {{"Method == 0? parent.ScreenSpace_Calc.to1 : 0"} {"Method == 0? parent.ScreenSpace_Calc.to1 : 0"}}
+  to2 {{"Method == 0? parent.ScreenSpace_Calc.to2 : Format.width"} {"Method == 0? parent.ScreenSpace_Calc.to2 : 0"}}
+  to3 {{"Method == 0? parent.ScreenSpace_Calc.to3 : Format.width"} {"Method == 0? parent.ScreenSpace_Calc.to3 : Format.height"}}
+  to4 {{"Method == 0? parent.ScreenSpace_Calc.to4 : 0"} {"Method == 0? parent.ScreenSpace_Calc.to4 : Format.height"}}
+  invert false
+  clamp {{parent.MB_CTRL.clamp}}
+  black_outside {{parent.MB_CTRL.black_outside}}
+  motionblur {{parent.Trans_Settings1.motionblur}}
+  shutter {{parent.Trans_Settings1.shutter}}
+  shutteroffset centred
+  from1 {{"Method == 1? parent.ScreenSpace_Calc.to1 : 0"} {"Method == 1? parent.ScreenSpace_Calc.to1 : 0"}}
+  from2 {{"Method == 1? parent.ScreenSpace_Calc.to2 : Format.width"} {"Method == 1? parent.ScreenSpace_Calc.to2 : 0"}}
+  from3 {{"Method == 1? parent.ScreenSpace_Calc.to3 : Format.width"} {"Method == 1? parent.ScreenSpace_Calc.to3 : Format.height"}}
+  from4 {{"Method == 1? parent.ScreenSpace_Calc.to4 : 0"} {"Method == 1? parent.ScreenSpace_Calc.to4 : Format.height"}}
+  name Master_CornerPin2D
+  xpos 1104
+  ypos 1462
+ }
+ Crop {
+  box {{parent.Overscan/-1} {parent.Overscan/-1} {"Format.width + parent.Overscan"} {"Format.height + parent.Overscan"}}
+  intersect true
+  crop {{parent.MB_CTRL.black_outside}}
+  name Crop1
+  xpos 1104
+  ypos 1546
+  disable {{parent.Crop?0:1}}
+ }
+ Dot {
+  name Dot17
+  xpos 1138
+  ypos 1760
+ }
+ Output {
+  name Output1
+  xpos 1104
+  ypos 1878
+ }
+push $N10c06b00
+ Dot {
+  name Dot23
+  xpos 1285
+  ypos 209
+ }
+set N10b9d600 [stack 0]
+ Reformat {
+  name Format
+  xpos 1251
+  ypos 334
+ }
+ NoOp {
+  inputs 0
+  name to1Calc
+  xpos 2145
+  ypos 1169
+  addUserKnob {20 User}
+  addUserKnob {7 FOV}
+  FOV {{atan(to1.world_matrix.11/to1.world_matrix.3)}}
+  addUserKnob {7 VertFOV}
+  VertFOV {{atan(to1.world_matrix.11/to1.world_matrix.7)}}
+  addUserKnob {26 ""}
+  addUserKnob {7 test2}
+  test2 {{to1.world_matrix.11(Parameters.Ref_Frame)/tan(FOV)/-1}}
+  addUserKnob {7 test3}
+  test3 {{to1.world_matrix.11(Parameters.Ref_Frame)/tan(VertFOV)/-1}}
+ }
+ NoOp {
+  inputs 0
+  name ScreenSpace_Calc
+  note_font_size 18
+  xpos 1777
+  ypos 1464
+  addUserKnob {20 User}
+  addUserKnob {12 to1UC}
+  to1UC {{Format.width/parent.to1.world_matrix.3(Parameters.Ref_Frame)/-2} {Format.height/parent.to1.world_matrix.7(Parameters.Ref_Frame)/-2}}
+  addUserKnob {12 to2UC}
+  to2UC {{Format.width/parent.to2.world_matrix.3(Parameters.Ref_Frame)/2} {Format.height/parent.to2.world_matrix.7(Parameters.Ref_Frame)/-2}}
+  addUserKnob {12 to3UC}
+  to3UC {{Format.width/parent.to3.world_matrix.3(Parameters.Ref_Frame)/2} {Format.height/parent.to3.world_matrix.7(Parameters.Ref_Frame)/2}}
+  addUserKnob {12 to4UC}
+  to4UC {{Format.width/parent.to4.world_matrix.3(Parameters.Ref_Frame)/-2} {Format.height/parent.to4.world_matrix.7(Parameters.Ref_Frame)/2}}
+  addUserKnob {26 ""}
+  addUserKnob {12 to1}
+  to1 {{"(((to1Calc.test2 + parent.to1.world_matrix.3(Parameters.Ref_Frame)) * to1UC.x/-1)* Parameters.Focal_Scale) + (Format.width - ((Format.width/2*Parameters.Focal_Scale) + (Format.width/2)))"} {"(((to1Calc.test3 + parent.to1.world_matrix.7(Parameters.Ref_Frame)) * to1UC.y/-1)* Parameters.Focal_Scale) + (Format.height - ((Format.height/2*Parameters.Focal_Scale) + (Format.height/2)))"}}
+  addUserKnob {12 to2}
+  to2 {{"(((to2Calc.test2 + (parent.to2.world_matrix.3(Parameters.Ref_Frame)/-1)) * to2UC.x/-1) * Parameters.Focal_Scale) + (Format.width - ((Format.width/2* Parameters.Focal_Scale) + (Format.width/2)))"} {"(((to2Calc.test3 + parent.to2.world_matrix.7(Parameters.Ref_Frame)) * to2UC.y/-1)* Parameters.Focal_Scale) + (Format.height - ((Format.height/2*Parameters.Focal_Scale) + (Format.height/2)))"}}
+  addUserKnob {12 to3}
+  to3 {{"(((to3Calc.test2 + (parent.to3.world_matrix.3(Parameters.Ref_Frame)/-1)) * to3UC.x/-1) * Parameters.Focal_Scale) + (Format.width - ((Format.width/2* Parameters.Focal_Scale) + (Format.width/2)))"} {"(((to3Calc.test3 + (parent.to3.world_matrix.7(Parameters.Ref_Frame)/-1)) * to3UC.y/-1) * Parameters.Focal_Scale) + (Format.height - ((Format.height/2* Parameters.Focal_Scale) + (Format.height/2)))"}}
+  addUserKnob {12 to4}
+  to4 {{"(((to4Calc.test2 + parent.to4.world_matrix.3(Parameters.Ref_Frame)) * to4UC.x/-1)* Parameters.Focal_Scale) + (Format.width - ((Format.width/2*Parameters.Focal_Scale) + (Format.width/2)))"} {"(((to4Calc.test3 + (parent.to4.world_matrix.7(Parameters.Ref_Frame))/-1) * to4UC.y/-1) * Parameters.Focal_Scale) + (Format.height - ((Format.height/2* Parameters.Focal_Scale) + (Format.height/2)))"}}
+ }
+ Input {
+  inputs 0
+  name Camera
+  xpos 2504
+  ypos -33
+  number 1
+ }
+ Dot {
+  name Dot2
+  xpos 2538
+  ypos 212
+ }
+set N10b83200 [stack 0]
+ Dot {
+  name Dot12
+  xpos 2174
+  ypos 212
+ }
+set N10b82b00 [stack 0]
+ Dot {
+  name Dot14
+  xpos 1646
+  ypos 212
+ }
+ FrameHold {
+  first_frame {{parent.Parameters.Ref_Frame}}
+  name FrameHold1
+  xpos 1612
+  ypos 327
+ }
+ Dot {
+  name Dot11
+  xpos 1646
+  ypos 467
+ }
+set N10b81600 [stack 0]
+ Dot {
+  name Dot18
+  xpos 1646
+  ypos 595
+ }
+push $N10b81600
+push $N10b9d600
+ Dot {
+  name Dot15
+  xpos 1518
+  ypos 209
+ }
+ Project3D2 {
+  inputs 2
+  name Project3D1
+  xpos 1484
+  ypos 464
+ }
+ Card2 {
+  rows 1
+  columns 1
+  z {{parent.Parameters.Depth_Para}}
+  lens_in_focal {{parent.Parameters.LENS(parent.Parameters.Ref_Frame)}}
+  lens_in_haperture {{parent.Parameters.HAperture(parent.Parameters.Ref_Frame)}}
+  rotate {{parent.Parameters.rotate.x} {parent.Parameters.rotate.y} 0}
+  uniform_scale {{"(max(abs(rotate.x),abs(rotate.y))/10) +1"}}
+  pivot {0 0 {parent.Parameters.Depth_Para/-1}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card10
+  xpos 1484
+  ypos 534
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo1
+  xpos 1484
+  ypos 592
+ }
+ Dot {
+  name Dot16
+  xpos 1518
+  ypos 645
+ }
+ Dot {
+  name Dot19
+  xpos 903
+  ypos 1513
+  hide_input true
+ }
+ NoOp {
+  name MB_CTRL
+  xpos 869
+  ypos 1546
+  addUserKnob {20 User}
+  addUserKnob {6 clamp +STARTLINE}
+  addUserKnob {6 black_outside l "black outside" -STARTLINE}
+  black_outside true
+ }
+ NoOp {
+  inputs 0
+  name Trans_Settings1
+  knobChanged "\nn = nuke.thisNode()\n#hide knobs\noffsetknob = n.knob('shuttercustomoffset')\n\nif n.knob('shutter_offset').value() == 'custom':\n    offsetknob.setEnabled( True )\n\nelse:\n    offsetknob.setEnabled( False )\n\n#transfer settings\nmaster = nuke.toNode('Master_CornerPin2D')\nreformat = nuke.toNode('FormatChild')\n\n\nfilterValue = int(n.knob('filter').getValue())\n\nshutterOffset = int(n.knob('shutter_offset').getValue())\n\nshutterValue = n.knob('shuttercustomoffset').getValue()\n\n\nmaster.knob('filter').setValue(filterValue)\nreformat.knob('filter').setValue(filterValue)\n\nmaster.knob('shutteroffset').setValue(shutterOffset)\n\nmaster.knob('shuttercustomoffset').setValue(shutterValue)\n\n"
+  xpos 876
+  ypos 1462
+  addUserKnob {20 User}
+  addUserKnob {4 filter M {Impulse Cubic Keys Rifmon Simon Mitchell Parzen Notch Lanczoz4 Lanczoz6 Sinc4 "" "" "" ""}}
+  filter Cubic
+  addUserKnob {7 motionblur R 0 4}
+  addUserKnob {7 shutter R 0 2}
+  shutter 0.5
+  addUserKnob {4 shutter_offset l "shutter offset" M {centered start end custom}}
+  addUserKnob {7 shuttercustomoffset l "" -STARTLINE +DISABLED R -1 1}
+ }
+push $N10b82b00
+ Dot {
+  name Dot4
+  xpos 2174
+  ypos 474
+ }
+set N10b5c800 [stack 0]
+ Dot {
+  name Dot1
+  xpos 2174
+  ypos 569
+ }
+set N10b5c100 [stack 0]
+ Dot {
+  name Dot6
+  xpos 2174
+  ypos 675
+ }
+set N10b2b900 [stack 0]
+ Axis2 {
+  translate {0.49152 0.27648 -2}
+  name to3_REF
+  xpos 2656
+  ypos 651
+ }
+push $N10b2b900
+ Dot {
+  name Dot7
+  xpos 2174
+  ypos 783
+ }
+ Axis2 {
+  translate {-0.49152 0.27648 -2}
+  name to4_REF
+  xpos 2785
+  ypos 759
+ }
+push $N10b5c100
+ Axis2 {
+  translate {0.49152 -0.27648 -2}
+  name to2_REF
+  xpos 2515
+  ypos 545
+ }
+push $N10b5c800
+ Axis2 {
+  translate {-0.49152 -0.27648 -2}
+  name to1_REF
+  xpos 2376
+  ypos 450
+ }
+push $N10b83200
+ Dot {
+  name Dot3
+  xpos 3036
+  ypos 212
+ }
+ Group {
+  name Inverse_Axis
+  tile_color 0xaa0000ff
+  xpos 3002
+  ypos 337
+  addUserKnob {20 User}
+  addUserKnob {20 _1 l "Inverse matrix" n 2}
+  _1 1
+  addUserKnob {41 world_matrix l "" -STARTLINE T INV_Matrix.world_matrix}
+  addUserKnob {20 "" n -1}
+  addUserKnob {26 ""}
+  addUserKnob {26 Info l "" +STARTLINE T "v1.0 (c) Riley Gray 2022"}
+ }
+  Input {
+   inputs 0
+   name Axis
+   xpos 0
+  }
+  Axis2 {
+   name Axis1
+   xpos 10
+   ypos 94
+  }
+  Axis2 {
+   inputs 0
+   useMatrix true
+   matrix {
+       {{parent.Matrix3_Inverse.matrix.0} {parent.Matrix3_Inverse.matrix.1} {parent.Matrix3_Inverse.matrix.2} 0}
+       {{parent.Matrix3_Inverse.matrix.3} {parent.Matrix3_Inverse.matrix.4} {parent.Matrix3_Inverse.matrix.5} 0}
+       {{parent.Matrix3_Inverse.matrix.6} {parent.Matrix3_Inverse.matrix.7} {parent.Matrix3_Inverse.matrix.8} 0}
+       {0 0 0 1}
+     }
+   name Axis3
+   xpos -135
+   ypos 330
+  }
+  Axis2 {
+   rot_order XYZ
+   translate {{parent.Axis1.world_matrix.3/-1} {parent.Axis1.world_matrix.7/-1} {parent.Axis1.world_matrix.11/-1}}
+   name INV_Matrix
+   xpos 13
+   ypos 330
+  }
+  Output {
+   name Output1
+   xpos 3
+   ypos 508
+  }
+  Matrix {
+   inputs 0
+   channels rgb
+   matrix {
+       {{parent.Axis1.world_matrix.0} {parent.Axis1.world_matrix.4} {parent.Axis1.world_matrix.8}}
+       {{parent.Axis1.world_matrix.1} {parent.Axis1.world_matrix.5} {parent.Axis1.world_matrix.9}}
+       {{parent.Axis1.world_matrix.2} {parent.Axis1.world_matrix.6} {parent.Axis1.world_matrix.10}}
+     }
+   name Matrix3_Transpose
+   xpos -81
+   ypos 207
+  }
+  NoOp {
+   inputs 0
+   name Determinant
+   xpos -220
+   ypos 209
+   addUserKnob {20 User}
+   addUserKnob {13 Cofactor}
+   Cofactor {{"(parent.Axis1.world_matrix.5 * parent.Axis1.world_matrix.10 - parent.Axis1.world_matrix.9 * parent.Axis1.world_matrix.6)*parent.Axis1.world_matrix.0"} {"((parent.Axis1.world_matrix.4 * parent.Axis1.world_matrix.10 - parent.Axis1.world_matrix.8 * parent.Axis1.world_matrix.6)*parent.Axis1.world_matrix.1)/-1"} {"(parent.Axis1.world_matrix.4 * parent.Axis1.world_matrix.9 - parent.Axis1.world_matrix.8 * parent.Axis1.world_matrix.5)*parent.Axis1.world_matrix.2"}}
+   addUserKnob {7 Det}
+   Det {{"Cofactor.x + Cofactor.y + Cofactor.z"}}
+  }
+  Matrix {
+   inputs 0
+   channels rgb
+   matrix {
+       {{"(parent.Matrix3_Transpose.matrix.4*parent.Matrix3_Transpose.matrix.8 - parent.Matrix3_Transpose.matrix.7*parent.Matrix3_Transpose.matrix.5)/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.3*parent.Matrix3_Transpose.matrix.8 - parent.Matrix3_Transpose.matrix.6*parent.Matrix3_Transpose.matrix.5)/-1/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.3*parent.Matrix3_Transpose.matrix.7 - parent.Matrix3_Transpose.matrix.6*parent.Matrix3_Transpose.matrix.4)/parent.Determinant.Det"}}
+       {{"(parent.Matrix3_Transpose.matrix.1*parent.Matrix3_Transpose.matrix.8 - parent.Matrix3_Transpose.matrix.7*parent.Matrix3_Transpose.matrix.2)/-1/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.0*parent.Matrix3_Transpose.matrix.8 - parent.Matrix3_Transpose.matrix.6*parent.Matrix3_Transpose.matrix.2)/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.0*parent.Matrix3_Transpose.matrix.7 - parent.Matrix3_Transpose.matrix.6*parent.Matrix3_Transpose.matrix.1)/-1/parent.Determinant.Det"}}
+       {{"(parent.Matrix3_Transpose.matrix.1*parent.Matrix3_Transpose.matrix.5 - parent.Matrix3_Transpose.matrix.4*parent.Matrix3_Transpose.matrix.2)/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.0*parent.Matrix3_Transpose.matrix.5 - parent.Matrix3_Transpose.matrix.3*parent.Matrix3_Transpose.matrix.2)/-1/parent.Determinant.Det"} {"(parent.Matrix3_Transpose.matrix.0*parent.Matrix3_Transpose.matrix.4 - parent.Matrix3_Transpose.matrix.3*parent.Matrix3_Transpose.matrix.1)/parent.Determinant.Det"}}
+     }
+   name Matrix3_Inverse
+   xpos -148
+   ypos 269
+  }
+ end_group
+ Dot {
+  name Dot5
+  xpos 3037
+  ypos 1170
+ }
+set N181d4800 [stack 0]
+ Axis2 {
+  useMatrix true
+  matrix {
+      {1 0 0 {parent.to1_REF.world_matrix.3(Parameters.Ref_Frame)}}
+      {0 1 0 {parent.to1_REF.world_matrix.7(Parameters.Ref_Frame)}}
+      {0 0 1 {parent.to1_REF.world_matrix.11(Parameters.Ref_Frame)}}
+      {0 0 0 1}
+    }
+  name to1
+  xpos 2373
+  ypos 1146
+ }
+push $N181d4800
+ Dot {
+  name Dot8
+  xpos 3037
+  ypos 1265
+ }
+set N181a3900 [stack 0]
+ Axis2 {
+  useMatrix true
+  matrix {
+      {1 0 0 {parent.to2_REF.world_matrix.3(Parameters.Ref_Frame)}}
+      {0 1 0 {parent.to2_REF.world_matrix.7(Parameters.Ref_Frame)}}
+      {0 0 1 {parent.to2_REF.world_matrix.11(Parameters.Ref_Frame)}}
+      {0 0 0 1}
+    }
+  name to2
+  xpos 2512
+  ypos 1241
+ }
+push $N181a3900
+ Dot {
+  name Dot9
+  xpos 3037
+  ypos 1371
+ }
+set N181a2b00 [stack 0]
+ Axis2 {
+  useMatrix true
+  matrix {
+      {1 0 0 {parent.to3_REF.world_matrix.3(Parameters.Ref_Frame)}}
+      {0 1 0 {parent.to3_REF.world_matrix.7(Parameters.Ref_Frame)}}
+      {0 0 1 {parent.to3_REF.world_matrix.11(Parameters.Ref_Frame)}}
+      {0 0 0 1}
+    }
+  name to3
+  xpos 2651
+  ypos 1347
+ }
+push $N181a2b00
+ Dot {
+  name Dot10
+  xpos 3037
+  ypos 1479
+ }
+ Axis2 {
+  useMatrix true
+  matrix {
+      {0 0 0 {parent.to4_REF.world_matrix.3(Parameters.Ref_Frame)}}
+      {0 0 0 {parent.to4_REF.world_matrix.7(Parameters.Ref_Frame)}}
+      {0 0 0 {parent.to4_REF.world_matrix.11(Parameters.Ref_Frame)}}
+      {0 0 0 1}
+    }
+  name to4
+  xpos 2782
+  ypos 1455
+ }
+push $N10b83200
+ Camera {
+  projection_mode {{"\[expression \[value the_cam]projection_mode(\[value the_frame])]"}}
+  focal {{"\[expression \[value the_cam]focal(\[value the_frame])]"}}
+  haperture {{"\[expression \[value the_cam]haperture(\[value the_frame])]"}}
+  vaperture {{"\[expression \[value the_cam]vaperture(\[value the_frame])]"}}
+  near {{"\[expression \[value the_cam]near(\[value the_frame])]"}}
+  far {{"\[expression \[value the_cam]far(\[value the_frame])]"}}
+  win_translate {{"\[expression \[value the_cam]win_translate.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_translate.v(\[value the_frame])]"}}
+  win_scale {{"\[expression \[value the_cam]win_scale.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_scale.v(\[value the_frame])]"}}
+  winroll {{"\[expression \[value the_cam]winroll(\[value the_frame])]"}}
+  focal_point {{"\[expression \[value the_cam]focal_point(\[value the_frame])]"}}
+  fstop {{"\[expression \[value the_cam]fstop(\[value the_frame])]"}}
+  name DummyCam1
+  help "DummyCam by Adrian Pueyo\n\nCamera that apart from the matrices also grabs all the \"Projection\" values from the upstream camera that it's connected to. Turns into a default Camera if no Camera connected. Can also be used inside of groups and gizmos, as many levels deep as you want :D All using live and super fast TCL.\n\nUpdated v1.1: Now grabs the correct frame too (thanks Erwan Leroy for the idea).\n\nUpdated v1.3: Now accepts Nuke13's Camera3\n\nadrianpueyo.com, 2019-2021"
+  onCreate "n = nuke.thisNode()\nfor k in \[\"projection_mode\",\"focal\",\"haperture\",\"vaperture\",\"near\",\"far\",\"win_translate\",\"win_scale\",\"winroll\",\"focal_point\",\"fstop\"]:\n    n\[k].setFlag(0x0000000010000000)"
+  label Ref
+  xpos 2385
+  ypos 315
+  addUserKnob {20 DummyCam l Defaults}
+  addUserKnob {43 the_cam +INVISIBLE}
+  the_cam "\[\n#DummyCam v1.3 - Updated 5 May 2021.\nset starting_point \"this.input0\"\nset default \"this.d_\"\n\n# If cam has no inputs, return the default.\nif \{\[exists \$starting_point]\} \{\n    set x \[node \$starting_point]\n\} \{ \n    return \$default\n\}\n\nset finished 0\nwhile \{\$finished != 1\} \{\n\n    # First look for a Cam or Input or topnode.\n    while \{\[class \$x] != \"Camera3\" && \[class \$x] != \"Camera2\" && \[class \$x] != \"Camera\" && \[class \$x] != \"Input\" && \$x != \[topnode \$x]\} \{\n        set x \[node \$x.input0]\n    \}\n\n    # Then, check if node is a cam (and return), and otherwise, if it's an input, see if the parent exists and move to it.\n    if \{\[class \$x]==\"Camera3\"||\[class \$x]==\"Camera2\"||\[class \$x]==\"Camera\"\} \{\n        set x \[append x \".\"]\n        return \$x\n    \} \{ \n        if \{ \[class \$x]==\"Input\" \} \{ \n            set inp \"\$x.parent.input\"\n            set inputNum \[value \$x.number]\n            set inp \[append inp \$inputNum]\n            if \{ \[exists \$inp] \} \{\n                set x \[node \$inp]\n            \} \{ \n                set finished 1\n            \}\n        \} \{ \n            set finished 1\n        \}\n    \}\n\}\nreturn \$default\n]"
+  addUserKnob {43 the_frame}
+  the_frame parent.Parameters.Ref_Frame
+  addUserKnob {4 d_projection_mode l projection M {perspective orthographic uv spherical ""}}
+  addUserKnob {7 d_focal l "focal length" R 0 100}
+  d_focal 50
+  addUserKnob {7 d_haperture l "horiz aperture" R 0 50}
+  d_haperture 24.576
+  addUserKnob {7 d_vaperture l "vert aperture" R 0 50}
+  d_vaperture 18.672
+  addUserKnob {7 d_near l near R 0 10}
+  d_near 0.1
+  addUserKnob {7 d_far l far R 0 10000}
+  d_far 10000
+  addUserKnob {30 d_win_translate l "window translate"}
+  addUserKnob {30 d_win_scale l "window scale"}
+  d_win_scale {1 1}
+  addUserKnob {7 d_winroll l "window roll" R 0 45}
+  addUserKnob {7 d_focal_point l "focal distance" R 0 10}
+  d_focal_point 2
+  addUserKnob {7 d_fstop l fstop R 0 30}
+  d_fstop 16
+  addUserKnob {26 version l " " t "Updated 5 May 2021" T "<span style=\"color:#666\"><br/><b>DummyCam v1.3</b> - <a href=\"http://www.adrianpueyo.com\" style=\"color:#666;text-decoration: none;\">adrianpueyo.com</a>, 2019-2021</span>"}
+ }
+push $N10b83200
+ Camera {
+  projection_mode {{"\[expression \[value the_cam]projection_mode(\[value the_frame])]"}}
+  focal {{"\[expression \[value the_cam]focal(\[value the_frame])]"}}
+  haperture {{"\[expression \[value the_cam]haperture(\[value the_frame])]"}}
+  vaperture {{"\[expression \[value the_cam]vaperture(\[value the_frame])]"}}
+  near {{"\[expression \[value the_cam]near(\[value the_frame])]"}}
+  far {{"\[expression \[value the_cam]far(\[value the_frame])]"}}
+  win_translate {{"\[expression \[value the_cam]win_translate.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_translate.v(\[value the_frame])]"}}
+  win_scale {{"\[expression \[value the_cam]win_scale.u(\[value the_frame])]"} {"\[expression \[value the_cam]win_scale.v(\[value the_frame])]"}}
+  winroll {{"\[expression \[value the_cam]winroll(\[value the_frame])]"}}
+  focal_point {{"\[expression \[value the_cam]focal_point(\[value the_frame])]"}}
+  fstop {{"\[expression \[value the_cam]fstop(\[value the_frame])]"}}
+  name DummyCam
+  help "DummyCam by Adrian Pueyo\n\nCamera that apart from the matrices also grabs all the \"Projection\" values from the upstream camera that it's connected to. Turns into a default Camera if no Camera connected. Can also be used inside of groups and gizmos, as many levels deep as you want :D All using live and super fast TCL.\n\nUpdated v1.1: Now grabs the correct frame too (thanks Erwan Leroy for the idea).\n\nUpdated v1.3: Now accepts Nuke13's Camera3\n\nadrianpueyo.com, 2019-2021"
+  onCreate "n = nuke.thisNode()\nfor k in \[\"projection_mode\",\"focal\",\"haperture\",\"vaperture\",\"near\",\"far\",\"win_translate\",\"win_scale\",\"winroll\",\"focal_point\",\"fstop\"]:\n    n\[k].setFlag(0x0000000010000000)"
+  xpos 2625
+  ypos 317
+  addUserKnob {20 DummyCam l Defaults}
+  addUserKnob {43 the_cam +INVISIBLE}
+  the_cam "\[\n#DummyCam v1.3 - Updated 5 May 2021.\nset starting_point \"this.input0\"\nset default \"this.d_\"\n\n# If cam has no inputs, return the default.\nif \{\[exists \$starting_point]\} \{\n    set x \[node \$starting_point]\n\} \{ \n    return \$default\n\}\n\nset finished 0\nwhile \{\$finished != 1\} \{\n\n    # First look for a Cam or Input or topnode.\n    while \{\[class \$x] != \"Camera3\" && \[class \$x] != \"Camera2\" && \[class \$x] != \"Camera\" && \[class \$x] != \"Input\" && \$x != \[topnode \$x]\} \{\n        set x \[node \$x.input0]\n    \}\n\n    # Then, check if node is a cam (and return), and otherwise, if it's an input, see if the parent exists and move to it.\n    if \{\[class \$x]==\"Camera3\"||\[class \$x]==\"Camera2\"||\[class \$x]==\"Camera\"\} \{\n        set x \[append x \".\"]\n        return \$x\n    \} \{ \n        if \{ \[class \$x]==\"Input\" \} \{ \n            set inp \"\$x.parent.input\"\n            set inputNum \[value \$x.number]\n            set inp \[append inp \$inputNum]\n            if \{ \[exists \$inp] \} \{\n                set x \[node \$inp]\n            \} \{ \n                set finished 1\n            \}\n        \} \{ \n            set finished 1\n        \}\n    \}\n\}\nreturn \$default\n]"
+  addUserKnob {43 the_frame}
+  the_frame "\[frame]"
+  addUserKnob {4 d_projection_mode l projection M {perspective orthographic uv spherical ""}}
+  addUserKnob {7 d_focal l "focal length" R 0 100}
+  d_focal 50
+  addUserKnob {7 d_haperture l "horiz aperture" R 0 50}
+  d_haperture 24.576
+  addUserKnob {7 d_vaperture l "vert aperture" R 0 50}
+  d_vaperture 18.672
+  addUserKnob {7 d_near l near R 0 10}
+  d_near 0.1
+  addUserKnob {7 d_far l far R 0 10000}
+  d_far 10000
+  addUserKnob {30 d_win_translate l "window translate"}
+  addUserKnob {30 d_win_scale l "window scale"}
+  d_win_scale {1 1}
+  addUserKnob {7 d_winroll l "window roll" R 0 45}
+  addUserKnob {7 d_focal_point l "focal distance" R 0 10}
+  d_focal_point 2
+  addUserKnob {7 d_fstop l fstop R 0 30}
+  d_fstop 16
+  addUserKnob {26 version l " " t "Updated 5 May 2021" T "<span style=\"color:#666\"><br/><b>DummyCam v1.3</b> - <a href=\"http://www.adrianpueyo.com\" style=\"color:#666;text-decoration: none;\">adrianpueyo.com</a>, 2019-2021</span>"}
+ }
+push $N10b83200
+ NoOp {
+  name Parameters
+  xpos 2504
+  ypos 336
+  addUserKnob {20 USER}
+  addUserKnob {7 LENS}
+  LENS {{parent.DummyCam.focal}}
+  addUserKnob {7 Ref_Lens}
+  Ref_Lens {{parent.DummyCam1.focal}}
+  addUserKnob {7 HAperture}
+  HAperture {{parent.DummyCam.haperture}}
+  addUserKnob {7 VAperture}
+  VAperture {{HAperture/(Format.width/Format.height)/Format.pixel_aspect}}
+  addUserKnob {7 HFOV}
+  HFOV {{atan(HAperture/(2*LENS))}}
+  addUserKnob {7 Focal_Scale}
+  Focal_Scale {{LENS/LENS(Ref_Frame)}}
+  addUserKnob {7 Depth_Para}
+  Depth_Para {{parent.Depth}}
+  addUserKnob {3 Ref_Frame}
+  Ref_Frame {{parent.Reference_Frame}}
+  addUserKnob {13 rotate}
+  rotate {{parent.Rotation.x} {parent.Rotation.y} {parent.Rotation.z}}
+ }
+end_group
+
