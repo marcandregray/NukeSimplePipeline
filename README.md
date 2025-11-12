@@ -20,7 +20,7 @@ NSP accomplishes this with:
 -Automatic versioning of writes to always match script version\
 -Ability to create reads sourced from selected writes\
 -As many relative paths as possible\
--Some handy python scripts\
+-Some handy python scripts
 
 
 ## Getting Started
