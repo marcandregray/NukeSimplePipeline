@@ -25,9 +25,7 @@ NSP accomplishes this with:
 
 ## Getting Started
 
-1. To making NSP work, create the "NSP_Settings" node inside Nuke.
-
-Fill in the 3 options with your preferences:\
+To make NSP work, create the "NSP_Settings" node inside Nuke. Fill in the 3 options with your preferences:
 
 -Set "Projects Directory" to a path that exists in your system, ideally where your projects are saved.\
 
