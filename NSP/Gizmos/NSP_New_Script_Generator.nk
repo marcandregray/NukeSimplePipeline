@@ -1,7 +1,7 @@
 set cut_paste_input [stack 0]
 BackdropNode {
  inputs 0
- name New_Script_Generator
+ name NSP_New_Script_Generator
  label "Project Path: \[value proj]\nShow: \[value show]\nSequence: \[value seq]\nShot: \[value shot]\nVersion: \[value version]\nScript Name: \[value script_name]\n<w>"
  note_font "DejaVu Sans Bold"
  note_font_size 25
@@ -9,8 +9,8 @@ BackdropNode {
  bdwidth 707
  bdheight 234
  addUserKnob {20 User}
- addUserKnob {1 proj l "Projects Path"}
- proj Path/To/Projects
+ addUserKnob {2 proj l "Projects Path" t "Common path to where you save your projects on your system."}
+ proj "Projects Path"
  addUserKnob {1 show l Show}
  show Show
  addUserKnob {1 seq l Sequence}

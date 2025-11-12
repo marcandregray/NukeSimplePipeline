@@ -18,6 +18,7 @@ import update_write_nodes
 import reads_relative_path
 import gizmoToGroup
 import set_read_node_label
+import NSP_Settings
 
 # --------------------------------------------------------------
 #  KNOB DEFAULTS :::::::::::::::::::::::::::::::::::::::::::::::
@@ -65,5 +66,6 @@ nuke.menu("Nuke").addCommand('PythonTools/Read from Write', 'read_from_write.rea
 NSP_ToolsMenu = nuke.menu('Nodes').addMenu('NSP Tools', icon="NSP.png")
 
 # NSP Essentials
+NSP_ToolsMenu.addCommand('NSP_Settings', 'NSP_Settings.NSP_Settings()')
 NSP_ToolsMenu.addCommand('NSP_New_Script_Generator', 'new_script_generator.new_script_generator()')
 NSP_ToolsMenu.addCommand('NSP_Precomp', 'make_precomp.make_precomp()', "ctrl+w", shortcutContext=2)
