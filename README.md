@@ -87,8 +87,6 @@ This tool turns selected gizmos in your script into groups. This can be extremel
 
 Why not always use groups and never use gizmos? Because saving everything in the script can massively increase the size of the script file and make it much slower to read/save.
 
-==============================================
-
 ## A Note on "Users" and "Shows"
 
 The Users and Shows folders inside .nuke/NSP are meant to be used as modular addons. Lets say you are working on a project called AZL and you always want the default resolution in Nuke to be 4096x2480 while you are working on the show. You can set this option in the menu.py file inside the .nuke/NSP/Shows/AZL folder, and then set your Show variable with the "NSP_Settings" node  to AZL. Nuke will now load the settings you specify from the AZL show folder on startup.
