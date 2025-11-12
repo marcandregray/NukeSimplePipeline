@@ -1,4 +1,4 @@
-## ================INSTALL================
+## Installation
 
 To install, copy the "NSP" folder to your .nuke folder.
 
@@ -10,7 +10,7 @@ After installing, launch Nuke and check the Project Settings for documentation. 
 
 All information can be found below as well.
 
-==================README==================
+## Getting Started
 
 Welcome to Nuke Simple Pipeline (NSP)! This package is ideal for compositors
 who are used to a studio pipeline and are starting a personal or freelance project
