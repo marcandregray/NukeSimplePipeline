@@ -25,19 +25,15 @@ NSP accomplishes this with:
 
 ## Getting Started
 
-To make NSP work, create the "NSP_Settings" node inside Nuke. Fill in the 3 options with your preferences:\
+To make NSP work, create the "NSP_Settings" node inside Nuke. Fill in the 3 options with your preferences:
 
--Set "Projects Directory" to a path that exists in your system, ideally where your projects are saved.\
+-Set "Projects Directory" to a path that exists in your system, ideally where your projects are saved.
 
 -Set "User" and "Show" to one of the dropdown options, which corresponds with the folders that exists inside the "Users" and "Shows" directories inside your .nuke/NSP folder respectively. If you don't want to use them, these can be set to [None].
 
 After setting these variables, save this file and restart Nuke for it to work. If there is a settings conflict, user settings will overwrite show settings. For example: If you set the default resolution to HD in your user settings, but the show is set to 4K, Nuke will use HD.
 
-2. Time to save a script for your new project. In Nuke, create
-"NSP_New_Script_Generator". In the node's properties, choose the Show,
-Sequence, Shot names, and version number you want this script to have. It is
-important that this naming pattern is maintained for other tools to work. Now click
-the "Calculate Script Name" button to see your result in the "Script Name" field.
+Time to save a script for your new project. In Nuke, create "NSP_New_Script_Generator". In the node's properties, choose the Show, Sequence, Shot names, and version number you want this script to have. It is important that this naming pattern is maintained for other tools to work. Now click the "Calculate Script Name" button to see your result in the "Script Name" field.
 
 It should look something like:
 
