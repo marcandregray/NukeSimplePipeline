@@ -1,16 +1,12 @@
 ## Installation
 
-To install, copy the "NSP" folder into your .nuke folder.
-You must also add the following line inside your .nuke/init.py file:
+To install, copy the "NSP" folder into your .nuke folder. You must also add the following line inside your .nuke/init.py file:
 nuke.pluginAddPath('NSP')
 
-If you don’t know how to find your .nuke folder, check out this guide:
-
+If you don’t know how to find your .nuke folder, check out this guide:\
 https://support.foundry.com/hc/en-us/articles/207271649-Q100048-Locating-the-default-nuke-directory
 
-After installing, launch Nuke and create the "NSP_README" toolset inside the nodegraph for documentation.
-
-All information can also be found below.
+After installing, launch Nuke and create the "NSP_README" toolset inside the nodegraph for documentation. All information can also be found below.
 
 ## What is NSP?
 
