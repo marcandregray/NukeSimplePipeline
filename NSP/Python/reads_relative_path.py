@@ -1,12 +1,16 @@
+# reads_relative_path_v003
+
 import nuke
 import os
 
 def replace_with_relPath():
-        
-    selectedNodes = nuke.selectedNodes("Read")
+
+    # Get the node that triggered the callback
+    readNode = nuke.thisNode()
+
+    # Define Project Path
     projPath = nuke.tcl("value root.project_directory")
-    
-    for n in selectedNodes:
-      path = n.knob('file').value()
-      new_path = path.replace(projPath + "/",'')
-      n.knob('file').setValue(new_path)
+
+    path = readNode.knob('file').value()
+    new_path = path.replace(projPath + "/",'')
+    readNode.knob('file').setValue(new_path)        

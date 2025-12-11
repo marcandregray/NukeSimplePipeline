@@ -1,3 +1,5 @@
+# read_from_write_v002
+
 import nuke
 import os
 
@@ -9,7 +11,6 @@ def read_from_write():
         writeNode = node
     
         # Get the relative file path of the write node
-        
         file_path1 = os.path.dirname(nuke.filename(writeNode))
         file_path2 = nuke.tcl("value root.project_directory") + "/"
         if file_path1.startswith(file_path2):

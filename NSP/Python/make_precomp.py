@@ -1,14 +1,27 @@
-# make_precomp_v006
+# make_precomp_v008
 
 import nuke
+import os
 
 def make_precomp():
 
-	#Create variables
-	show = nuke.tcl ("lrange [split [file rootname [file tail [value root.name]]] '_'] 0 end-3")
-	seq = nuke.tcl ("lrange [split [file rootname [file tail [value root.name]]] '_'] 1 end-2")
-	shot = nuke.tcl ("lrange [split [file rootname [file tail [value root.name]]] '_'] 2 end-1")
-	version = nuke.tcl ("lrange [split [file rootname [file tail [value root.name]]] '_'] end end")
+	#Get script name
+	scriptLocation = nuke.scriptName()
+
+	#Get script directory part list
+	dirName = os.path.dirname(scriptLocation)
+	scriptDirParts = dirName.split("/")
+	scriptDirParts.reverse()
+
+	#Get script name part list
+	scriptName = os.path.basename(scriptLocation)
+	scriptNameParts = scriptName.split("_")
+	scriptNameParts.reverse()
+
+	show = scriptDirParts[4]
+	seq = scriptDirParts[3]
+	shot = scriptDirParts[2]
+	version = scriptNameParts[0].split(".")[0]
 	padding = "_%04d"
 
 	def get_precomp_name():
@@ -40,12 +53,12 @@ def make_precomp():
 
 		#Create write node
 		writeNode = nuke.createNode('NSP_Precomp.nk')
-		writeNode.knob('name').setValue("Precomp_" + precompName)
+		writeNode.knob('name').setValue("NSP_Precomp_" + precompName)
 		writeNode.knob('file').setValue(procedural_file_path)
 		writeNode.knob('proxy').setValue(procedural_file_path)
 		writeNode.knob('channels').setValue("rgba")
 		writeNode.knob('create_directories').setValue(1)
-		writeNode.knob('precomp_name').setValue(precompName)		
+		writeNode.knob('precomp_name').setValue(precompName)
 		writeNode.knob('extension').setValue(extension)
 
 		if extension == "exr":
